@@ -1,0 +1,244 @@
+{
+  "version": "2.0.0",
+  "exported_at": "2026-03-31T00:00:00.000Z",
+  "app_name": "Kasir Koperasi Picha",
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "password": "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9",
+      "name": "Super Administrator",
+      "email": "admin@picha.id",
+      "role": "admin",
+      "phone": "081234567890",
+      "avatar": "AP",
+      "is_active": true,
+      "created_at": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "username": "kepala",
+      "password": "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9",
+      "name": "Drs. H. Ahmad Fauzi (Kepala)",
+      "email": "kepala@picha.id",
+      "role": "kepala",
+      "phone": "081234567891",
+      "avatar": "AF",
+      "is_active": true,
+      "created_at": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "username": "pengurus",
+      "password": "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9",
+      "name": "Siti Nurhaliza (Bendahara)",
+      "email": "pengurus@picha.id",
+      "role": "pengurus",
+      "phone": "081234567892",
+      "avatar": "SN",
+      "is_active": true,
+      "created_at": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": 4,
+      "username": "kasir",
+      "password": "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9",
+      "name": "Budi Santoso (Petugas Kasir)",
+      "email": "kasir@picha.id",
+      "role": "kasir",
+      "phone": "081234567893",
+      "avatar": "BS",
+      "is_active": true,
+      "created_at": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": 5,
+      "username": "penitip",
+      "password": "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9",
+      "name": "Ibu Rahmawati (Kantin Berkah)",
+      "email": "penitip@picha.id",
+      "role": "penitip",
+      "phone": "081234567894",
+      "avatar": "RW",
+      "is_active": true,
+      "created_at": "2026-01-01T00:00:00.000Z"
+    }
+  ],
+  "settings": [
+    { "key": "app_name", "value": "Kasir Koperasi Picha" },
+    { "key": "koperasi_name", "value": "Koperasi Madrasah Picha Mandiri" },
+    { "key": "default_bagi_hasil_persen", "value": "10" },
+    { "key": "approval_limit", "value": "500000" },
+    { "key": "periode_tutup_buku", "value": "Bulanan" },
+    { "key": "diskon_anggota_persen", "value": "5" },
+    { "key": "kategori_barang", "value": "[\"Makanan\",\"Minuman\",\"ATK\",\"Seragam\",\"Snack & Jajanan\",\"Lainnya\"]" }
+  ],
+  "consignors": [
+    {
+      "id": 1,
+      "user_id": 5,
+      "nama_penitip": "Kantin Berkah (Ibu Rahma)",
+      "telepon": "081234567894",
+      "alamat": "Dapur Madrasah Blok A",
+      "bagi_hasil_persen": 10,
+      "total_saldo_tertahan": 0,
+      "created_at": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "user_id": null,
+      "nama_penitip": "Pak Joko (Roti & Donat)",
+      "telepon": "082345678901",
+      "alamat": "Jl. Melati No. 12",
+      "bagi_hasil_persen": 10,
+      "total_saldo_tertahan": 0,
+      "created_at": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "user_id": null,
+      "nama_penitip": "Dapur Bu Dewi (Aneka Gorengan)",
+      "telepon": "083456789012",
+      "alamat": "Komplek Perumahan Asri",
+      "bagi_hasil_persen": 10,
+      "total_saldo_tertahan": 0,
+      "created_at": "2026-01-01T00:00:00.000Z"
+    }
+  ],
+  "items": [
+    {
+      "id": 1,
+      "kode": "BRG001",
+      "nama": "Buku Tulis Sidu 38 Lembar",
+      "kategori": "ATK",
+      "harga_beli": 3500,
+      "harga_jual": 4500,
+      "stok": 120,
+      "stok_minimum": 20,
+      "satuan": "Pcs",
+      "tipe": "koperasi",
+      "is_active": true
+    },
+    {
+      "id": 2,
+      "kode": "BRG002",
+      "nama": "Pulpen Standard AE7 0.5 Hitam",
+      "kategori": "ATK",
+      "harga_beli": 2000,
+      "harga_jual": 3000,
+      "stok": 85,
+      "stok_minimum": 15,
+      "satuan": "Pcs",
+      "tipe": "koperasi",
+      "is_active": true
+    },
+    {
+      "id": 3,
+      "kode": "BRG003",
+      "nama": "Air Mineral Le Minerale 600ml",
+      "kategori": "Minuman",
+      "harga_beli": 2500,
+      "harga_jual": 3500,
+      "stok": 96,
+      "stok_minimum": 24,
+      "satuan": "Botol",
+      "tipe": "koperasi",
+      "is_active": true
+    },
+    {
+      "id": 4,
+      "kode": "BRG004",
+      "nama": "Susu Kotak Ultra Milk Cokelat 200ml",
+      "kategori": "Minuman",
+      "harga_beli": 5000,
+      "harga_jual": 6000,
+      "stok": 48,
+      "stok_minimum": 12,
+      "satuan": "Kotak",
+      "tipe": "koperasi",
+      "is_active": true
+    },
+    {
+      "id": 5,
+      "kode": "BRG005",
+      "nama": "Pensil 2B Faber-Castell",
+      "kategori": "ATK",
+      "harga_beli": 3000,
+      "harga_jual": 4000,
+      "stok": 60,
+      "stok_minimum": 10,
+      "satuan": "Pcs",
+      "tipe": "koperasi",
+      "is_active": true
+    },
+    {
+      "id": 6,
+      "kode": "BRG006",
+      "nama": "Penghapus Kenko Putih",
+      "kategori": "ATK",
+      "harga_beli": 1500,
+      "harga_jual": 2000,
+      "stok": 40,
+      "stok_minimum": 10,
+      "satuan": "Pcs",
+      "tipe": "koperasi",
+      "is_active": true
+    }
+  ],
+  "consignment_items": [
+    {
+      "id": 1,
+      "penitip_id": 1,
+      "kode": "TITIP001",
+      "nama": "Nasi Uduk Komplit Bu Rahma",
+      "kategori": "Makanan",
+      "harga_jual": 8000,
+      "stok": 25,
+      "satuan": "Porsi",
+      "bagi_hasil_persen": 10,
+      "is_active": true
+    },
+    {
+      "id": 2,
+      "penitip_id": 2,
+      "kode": "TITIP002",
+      "nama": "Roti Cokelat Lumer Pak Joko",
+      "kategori": "Snack & Jajanan",
+      "harga_jual": 4000,
+      "stok": 30,
+      "satuan": "Pcs",
+      "bagi_hasil_persen": 10,
+      "is_active": true
+    },
+    {
+      "id": 3,
+      "penitip_id": 3,
+      "kode": "TITIP003",
+      "nama": "Bakwan & Risoles Mayo Bu Dewi",
+      "kategori": "Snack & Jajanan",
+      "harga_jual": 2500,
+      "stok": 40,
+      "satuan": "Pcs",
+      "bagi_hasil_persen": 10,
+      "is_active": true
+    }
+  ],
+  "cash_flow": [
+    {
+      "id": 1,
+      "tanggal": "2026-01-01T08:00:00.000Z",
+      "tipe": "masuk",
+      "kategori": "modal_awal",
+      "jumlah": 1500000,
+      "referensi_id": null,
+      "referensi_tipe": "inisialisasi",
+      "catatan": "Modal Awal Kas Operasional Koperasi Madrasah Picha",
+      "status_approval": "approved",
+      "approved_by": 2,
+      "approved_at": "2026-01-01T08:00:00.000Z",
+      "created_by": 1,
+      "created_by_name": "Super Administrator"
+    }
+  ]
+}
+

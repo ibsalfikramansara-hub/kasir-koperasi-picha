@@ -1,0 +1,39 @@
+[build]
+  publish = "."
+  command = "npm run build"
+
+[[redirects]]
+  from = "/"
+  to = "/login.html"
+  status = 200
+
+[[redirects]]
+  from = "/dashboard"
+  to = "/dashboard-admin.html"
+  status = 200
+
+[[redirects]]
+  from = "/kasir"
+  to = "/kasir.html"
+  status = 200
+
+[[redirects]]
+  from = "/kepala-koperasi"
+  to = "/kepala-koperasi.html"
+  status = 200
+
+[[redirects]]
+  from = "/pengurus"
+  to = "/pengurus.html"
+  status = 200
+
+[[redirects]]
+  from = "/penitip"
+  to = "/penitip.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"

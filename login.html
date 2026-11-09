@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masuk - Kasir Koperasi Picha</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+        .glass-card { background: #FFFFFF; border-radius: 0.75rem; box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); border: 1px solid rgb(243 244 246); }
+    </style>
+    <link rel="stylesheet" href="css/app.css">
+</head>
+<body class="bg-indigo-600 min-h-screen flex items-center justify-center px-4">
+
+    <!-- Logo Branding -->
+    <div class="absolute top-8 left-8 flex items-center gap-2 z-10">
+        <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-indigo-600 font-bold text-xl shadow-sm">
+            P
+        </div>
+        <span class="text-white font-bold text-lg tracking-tight hidden sm:block">Kasir Koperasi Picha</span>
+    </div>
+
+    <div class="w-full max-w-md">
+        <div class="glass-card p-8 md:p-10 mx-auto">
+            <div class="text-center mb-8">
+                <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center text-indigo-600 mx-auto mb-4">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-900">Selamat Datang Kembali</h2>
+                <p class="text-gray-500 text-sm mt-2">Masuk untuk mengelola operasional kasir koperasi Anda</p>
+            </div>
+
+            <form id="login-form" class="space-y-5">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                    <input type="email" id="login-email" required class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all" placeholder="admin@picha.id">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Kata Sandi</label>
+                    <input type="password" id="login-password" required class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all" placeholder="••••••••">
+                </div>
+
+                <div id="login-error" class="hidden p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm"></div>
+
+                <div class="flex items-center justify-between">
+                    <label class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+                        <input type="checkbox" class="rounded text-indigo-600 focus:ring-indigo-500"> Ingat saya
+                    </label>
+                    <button type="button" onclick="alert('Silakan hubungi Administrator Koperasi (admin@picha.id) untuk mereset kata sandi akun Anda.')" class="text-sm text-indigo-600 font-medium hover:text-indigo-700">Lupa kata sandi?</button>
+                </div>
+
+                <button type="submit" id="login-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3.5 rounded-xl transition-colors shadow-lg shadow-indigo-200 flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                    Masuk
+                </button>
+            </form>
+
+            <div class="mt-8 pt-6 border-t border-gray-100">
+                <p class="text-center text-sm text-gray-500">
+                    Tidak punya akun? <button type="button" onclick="alert('Pembuatan akun baru dikelola oleh Administrator Koperasi melalui menu Kelola Pengguna.')" class="text-indigo-600 font-medium hover:text-indigo-700">Hubungi Administrator</button>
+                </p>
+            </div>
+
+            <div class="mt-4 text-center text-xs text-gray-400">
+                Kasir Koperasi Picha v2.0.0 &copy; 2026 &bull; Offline-First (IndexedDB)
+            </div>
+        </div>
+
+    </div>
+
+    <script src="js/core.js"></script>
+    <script>
+        (async function () {
+            await Picha.init();
+            const form = document.getElementById('login-form');
+            const btn = document.getElementById('login-btn');
+            const errorEl = document.getElementById('login-error');
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = document.getElementById('login-email').value;
+                const password = document.getElementById('login-password').value;
+
+                btn.disabled = true;
+                btn.textContent = 'Memproses...';
+                errorEl.classList.add('hidden');
+
+                try {
+                    const result = await Picha.login(email, password);
+                    if (result.success) {
+                        const rolePage = {
+                            admin: 'dashboard-admin.html',
+                            kasir: 'kasir.html',
+                            kepala: 'kepala-koperasi.html',
+                            pengurus: 'pengurus.html',
+                            penitip: 'penitip.html',
+                        };
+                        window.location.href = rolePage[result.user.role] || 'dashboard-admin.html';
+                    } else {
+                        errorEl.textContent = result.message;
+                        errorEl.classList.remove('hidden');
+                    }
+                } catch (err) {
+                    errorEl.textContent = 'Terjadi kesalahan: ' + err.message;
+                    errorEl.classList.remove('hidden');
+                } finally {
+                    btn.disabled = false;
+                    btn.textContent = 'Masuk';
+                }
+            });
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,201 @@
+/* ==========================================================================
+   Kasir Koperasi Picha - Core Stylesheet & Responsive Layout
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --sidebar-width: 16rem; /* 256px */
+  --header-height: 4rem;  /* 64px */
+  --primary: #4F46E5;
+  --primary-hover: #4338CA;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #F9FAFB;
+  color: #111827;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.sidebar-indigo {
+  background-color: var(--primary);
+}
+
+.glass-card {
+  background: #FFFFFF;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.05), 0 1px 2px -1px rgb(0 0 0 / 0.05);
+  border: 1px solid rgb(243 244 246);
+}
+
+.nav-item {
+  transition: all 0.2s ease-in-out;
+}
+
+.nav-item.active {
+  background-color: rgba(255, 255, 255, 0.18) !important;
+  border-left: 4px solid #FFFFFF !important;
+  color: #FFFFFF !important;
+}
+
+.nav-item:hover:not(.active) {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #FFFFFF;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.15rem 0.6rem;
+  border-radius: 9999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.stt-aktif {
+  background: #DCFCE7;
+  color: #166534;
+}
+
+.stt-nonaktif {
+  background: #F3F4F6;
+  color: #4B5563;
+}
+
+/* ==========================================================================
+   ROBUST RESPONSIVE LAYOUT ENGINE
+   Mencegah menu sidebar menutupi konten halaman pada SEMUA resolusi layar
+   ========================================================================== */
+
+#sidebar {
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  width: var(--sidebar-width) !important;
+  position: fixed !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+#sidebar > nav {
+  flex: 1 1 0% !important;
+  overflow-y: auto !important;
+  padding-bottom: 1.5rem !important;
+  margin-top: 1rem !important;
+}
+
+#sidebar > div:last-child {
+  flex-shrink: 0 !important;
+}
+
+/* DESKTOP (>= 768px): Sidebar tetap di kiri, Konten utama bergeser ke kanan */
+@media (min-width: 768px) {
+  #sidebar {
+    transform: translateX(0) !important;
+    z-index: 35 !important;
+  }
+
+  #main-wrapper {
+    margin-left: var(--sidebar-width) !important;
+    width: calc(100% - var(--sidebar-width)) !important;
+    min-height: 100vh !important;
+    transition: margin-left 0.25s ease-in-out, width 0.25s ease-in-out !important;
+  }
+
+  header.fixed,
+  header.fixed-header {
+    left: var(--sidebar-width) !important;
+    width: calc(100% - var(--sidebar-width)) !important;
+    transition: left 0.25s ease-in-out, width 0.25s ease-in-out !important;
+    z-index: 30 !important;
+  }
+
+  main {
+    padding-top: calc(var(--header-height) + 1.25rem) !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  #mobile-overlay {
+    display: none !important;
+  }
+
+  /* Desktop Sidebar Collapsed Mode (jika user ingin full-screen) */
+  body.sidebar-collapsed #sidebar {
+    transform: translateX(-100%) !important;
+  }
+
+  body.sidebar-collapsed #main-wrapper {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+
+  body.sidebar-collapsed header.fixed,
+  body.sidebar-collapsed header.fixed-header {
+    left: 0 !important;
+    width: 100% !important;
+  }
+}
+
+/* MOBILE (< 768px): Sidebar drawer tersembunyi, Konten 100% layar */
+@media (max-width: 767.98px) {
+  #sidebar {
+    transform: translateX(-100%) !important;
+    z-index: 50 !important;
+  }
+
+  body.sidebar-mobile-open #sidebar {
+    transform: translateX(0) !important;
+  }
+
+  #main-wrapper {
+    margin-left: 0 !important;
+    width: 100% !important;
+    min-height: 100vh !important;
+  }
+
+  header.fixed,
+  header.fixed-header {
+    left: 0 !important;
+    width: 100% !important;
+    z-index: 30 !important;
+  }
+
+  main {
+    padding-top: calc(var(--header-height) + 1rem) !important;
+    width: 100% !important;
+  }
+}
+
+/* Cetak nota & laporan rapi */
+@media print {
+  #sidebar,
+  header,
+  #mobile-overlay,
+  .no-print {
+    display: none !important;
+  }
+
+  #main-wrapper {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+
+  main {
+    padding-top: 0 !important;
+  }
+}
+

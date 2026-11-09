@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoring Koperasi - Kasir Koperasi Picha</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+        .sidebar-indigo { background-color: #4F46E5; }
+        .nav-item.active { background-color: rgba(255, 255, 255, 0.15); border-left: 4px solid #FFFFFF; }
+        .nav-item:hover:not(.active) { background-color: rgba(255, 255, 255, 0.08); }
+        .glass-card { background: #FFFFFF; border-radius: 0.75rem; box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); border: 1px solid rgb(243 244 246); }
+        @media (min-width: 768px) { .hide-on-desktop { display: none !important; } }
+        @media (max-width: 767px) { #sidebar { transform: translatex(-100%); } }
+        .badge { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.125rem 0.5rem; border-radius: 9999px; font-size: 0.7rem; font-weight: 600; }
+        .stt-aman, .bg-masuk { background: #dcfce7; color: #166534; }
+        .stt-waspada, .stt-belum { background: #fef3c7; color: #92400e; }
+        .stt-bahaya, .bg-keluar { background: #fee2e2; color: #991b1b; }
+        .stt-sebagian { background: #dbeafe; color: #1e40af; }
+        .bar { background: #e5e7eb; height: 8px; border-radius: 9999px; overflow: hidden; }
+        .bar-fill { height: 100%; border-radius: 9999px; transition: width 0.6s ease; }
+    </style>
+    <link rel="stylesheet" href="css/app.css">
+</head>
+<body class="bg-gray-50 text-gray-900 overflow-x-hidden">
+
+    <div id="mobile-overlay" class="fixed inset-0 z-40 bg-black/60 hidden backdrop-blur-sm transition-opacity duration-300"></div>
+
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 sidebar-indigo text-white transform -translate-x-full transition-transform duration-300 ease-in-out">
+        <div class="flex items-center justify-between h-16 px-5 border-b border-white/10 bg-indigo-500/90">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 bg-white rounded-xl flex items-center justify-center text-indigo-600 font-bold text-xl shadow-sm">P</div>
+                <span class="font-bold text-lg tracking-tight">Kasir Picha</span>
+            </div>
+            <button id="close-sidebar" class="text-white/70 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        <nav class="mt-6 px-4 space-y-1">
+            <div class="px-3 text-[10px] font-semibold text-indigo-100 uppercase tracking-wider mb-5">Menu Utama</div>
+            <a href="kepala-koperasi.html" class="nav-item active flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl transition-colors group">
+                <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center group-hover:bg-white/30"><svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg></div>
+                <span>Dashboard Monitoring</span>
+            </a>
+            <a href="laporan.html" class="nav-item flex items-center gap-3 px-4 py-3 text-sm font-medium text-indigo-200 rounded-xl transition-colors group">
+                <div class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center group-hover:bg-white/20"><svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg></div>
+                <span>Laporan Keuangan</span>
+            </a>
+            <a href="aruskas.html" class="nav-item flex items-center gap-3 px-4 py-3 text-sm font-medium text-indigo-200 rounded-xl transition-colors group">
+                <div class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center group-hover:bg-white/20"><svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg></div>
+                <span>Arus Kas</span>
+            </a>
+            <a href="barang.html" class="nav-item flex items-center gap-3 px-4 py-3 text-sm font-medium text-indigo-200 rounded-xl transition-colors group">
+                <div class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center group-hover:bg-white/20"><svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg></div>
+                <span>Stok Barang</span>
+            </a>
+            <div class="px-3 text-[10px] font-semibold text-indigo-100 uppercase tracking-wider mt-10 mb-5">Sistem</div>
+            <a href="audit.html" class="nav-item flex items-center gap-3 px-4 py-3 text-sm font-medium text-indigo-200 rounded-xl transition-colors group">
+                <div class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center group-hover:bg-white/20"><svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg></div>
+                <span>Audit Trail</span>
+            </a>
+        </nav>
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-white/10 bg-indigo-500/90">
+            <div class="flex items-center gap-3 px-2 py-3 rounded-xl bg-white/10 hover:bg-white/20 transition-colors cursor-pointer group" onclick="window.location.href='index.html'">
+                <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-[10px] font-medium group-hover:text-white">?</div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-xs font-medium text-white truncate">Versi 2.0.0</p>
+                    <p class="text-[10px] text-indigo-200 truncate">Koperasi Picha</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <div id="main-wrapper" class="flex flex-col min-h-screen">
+        <header class="fixed-header fixed top-0 left-0 right-0 z-40 h-16 sidebar-indigo text-white flex items-center justify-between px-4 sm:px-6 shadow-sm border-b border-white/10">
+            <div class="flex items-center gap-3">
+                <button id="open-sidebar" class="text-indigo-100 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+                <div class="hidden sm:flex items-center gap-2 text-[10px] font-medium text-indigo-200 uppercase tracking-wider">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path></svg>
+                    <span>Monitoring Koperasi</span>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-3 pl-4 border-l border-white/10">
+                    <div class="text-right hidden sm:block">
+                        <p class="text-sm font-bold text-white user-name leading-tight">Kepala Koperasi</p>
+                        <p class="text-xs text-indigo-200 user-role">Pimpinan &amp; Pembina</p>
+                    </div>
+                    <div class="w-9 h-9 rounded-full bg-white flex items-center justify-center text-indigo-600 font-bold text-lg shadow-md user-avatar">KK</div>
+                    <button onclick="Picha.logout()" class="ml-2 text-indigo-200 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10 hidden sm:block" title="Logout">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-1 pt-20 sm:pt-0 pb-12 px-4 sm:px-6 lg:px-8 max-w-none w-full">
+            <div class="max-w-7xl mx-auto w-full">
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900">Monitoring Koperasi</h1>
+                        <p class="text-gray-500 text-sm mt-1">Pantau penjualan, arus kas, dan piutang (hanya baca)</p>
+                        <p class="text-[10px] text-indigo-400 mt-1 font-medium">Mode read-only. Persetujuan pengeluaran besar tersedia di bawah.</p>
+                    </div>
+                </div>
+
+                <!-- Metric cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="glass-card p-6 flex items-center justify-between group">
+                        <div>
+                            <p class="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-1">Penjualan Hari Ini</p>
+                            <h3 class="text-2xl font-bold text-gray-900 leading-tight" id="k-penjualan">Rp 0</h3>
+                            <p class="text-[10px] text-green-600 font-medium mt-2">Transaksi tunai &amp; hutang</p>
+                        </div>
+                        <div class="w-12 h-12 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center shadow-md group-hover:scale-105 transition-transform duration-200">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                        </div>
+                    </div>
+                    <div class="glass-card p-6 flex items-center justify-between group">
+                        <div>
+                            <p class="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-1">Saldo Kas Koperasi</p>
+                            <h3 class="text-2xl font-bold text-gray-900 leading-tight" id="k-saldo">Rp 0</h3>
+                            <p class="text-[10px] text-green-600 font-medium mt-2" id="k-saldo-status">Terkini</p>
+                        </div>
+                        <div class="w-12 h-12 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shadow-md group-hover:scale-105 transition-transform duration-200">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                    </div>
+                    <div class="glass-card p-6 flex items-center justify-between group">
+                        <div>
+                            <p class="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-1">Piutang Belum Lunas</p>
+                            <h3 class="text-2xl font-bold text-gray-900 leading-tight" id="k-piutang">Rp 0</h3>
+                            <p class="text-[10px] text-amber-600 font-medium mt-2">Hutang anggota</p>
+                        </div>
+                        <div class="w-12 h-12 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center shadow-md group-hover:scale-105 transition-transform duration-200">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        </div>
+                    </div>
+                    <div class="glass-card p-6 flex items-center justify-between group">
+                        <div>
+                            <p class="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-1">Saldo Bagi Hasil Penitip</p>
+                            <h3 class="text-2xl font-bold text-gray-900 leading-tight" id="k-bagihasil">Rp 0</h3>
+                            <p class="text-[10px] text-indigo-600 font-medium mt-2">Kewajiban setoran</p>
+                        </div>
+                        <div class="w-12 h-12 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center shadow-md group-hover:scale-105 transition-transform duration-200">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Chart: Penjualan per bulan -->
+                    <div class="lg:col-span-2 glass-card p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="font-bold text-gray-900 text-lg">Penjualan per Bulan</h3>
+                            <span class="text-[10px] text-gray-400 font-medium">Estimasi dari transaksi</span>
+                        </div>
+                        <div class="h-64 flex items-end gap-3" id="k-chart"></div>
+                        <div class="mt-4 grid grid-cols-6 gap-2 text-[10px] text-gray-500" id="k-chart-labels"></div>
+                    </div>
+
+                    <!-- Persetujuan pengeluaran besar -->
+                    <div class="glass-card p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="font-bold text-gray-900 text-lg">Persetujuan Pengeluaran Besar</h3>
+                            <p class="text-[10px] text-gray-400">Biaya operasional yang butuh approval</p>
+                        </div>
+                        <div class="space-y-3" id="k-approval-list">
+                            <div class="text-center text-gray-400 text-sm italic p-4">Memuat...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transaksi terbaru & piutang -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
+                    <div class="glass-card p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="font-bold text-gray-900 text-lg">Transaksi Terbaru</h3>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse min-w-full">
+                                <thead>
+                                    <tr class="text-[10px] font-semibold text-gray-400 uppercase tracking-wider border-b border-gray-100">
+                                        <th class="pb-4 pr-2">Tanggal</th>
+                                        <th class="pb-4 pr-2">No Transaksi</th>
+                                        <th class="pb-4 pr-2">Pembeli</th>
+                                        <th class="pb-4 text-right">Total</th>
+                                        <th class="pb-4">Metode</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="k-recent-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="glass-card p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="font-bold text-gray-900 text-lg">Piutang Tertinggi</h3>
+                        </div>
+                        <div class="space-y-4" id="k-piutang-list"></div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+    </div>
+
+    <script src="js/core.js"></script>
+    <script>
+        (async function () {
+            await Picha.init();
+            await Picha.protectPage();
+            const $ = (id) => document.getElementById(id);
+
+            async function loadData() {
+                const txs = await Picha.list('transactions');
+                const today = Picha.todayISO();
+                const todayTx = txs.filter(t => (t.tanggal || '').slice(0, 10) === today);
+                const penjualanHariIni = todayTx.reduce((s, t) => s + (parseFloat(t.total) || 0), 0);
+                $('k-penjualan').textContent = Picha.formatRupiah(penjualanHariIni);
+
+                // Saldo kas dari cash_flow
+                const cf = await Picha.getCashFlow();
+                const saldo = cf.reduce((s, r) => s + (r.tipe === 'masuk' ? r.jumlah : -r.jumlah), 0);
+                $('k-saldo').textContent = Picha.formatRupiah(saldo);
+                const statusEl = $('k-saldo-status');
+                if (saldo < 0) { statusEl.textContent = 'Defisit'; statusEl.className = 'text-[10px] text-rose-600 font-medium mt-2'; }
+                else if (saldo < 1000000) { statusEl.textContent = 'Waspada'; statusEl.className = 'text-[10px] text-amber-600 font-medium mt-2'; }
+                else { statusEl.textContent = 'Aman'; statusEl.className = 'text-[10px] text-green-600 font-medium mt-2'; }
+
+                // Piutang
+                const debts = await Picha.getDebts();
+                const bl = debts.filter(d => d.status !== 'lunas');
+                const totalPiutang = bl.reduce((s, d) => s + (parseFloat(d.sisa_hutang) || 0), 0);
+                $('k-piutang').textContent = Picha.formatRupiah(totalPiutang);
+
+                // Saldo bagi hasil semua penitip
+                const consignors = await Picha.list('consignors');
+                const totalBH = consignors.reduce((s, c) => s + (parseFloat(c.saldo_bagi_hasil) || 0), 0);
+                $('k-bagihasil').textContent = Picha.formatRupiah(totalBH);
+
+                // Chart penjualan per bulan (6 bulan terakhir) - hitung dari transactions
+                const months = [];
+                for (let i = 5; i >= 0; i--) {
+                    const d = new Date(); d.setMonth(d.getMonth() - i);
+                    months.push(d.toISOString().slice(0, 7));
+                }
+                const monthly = {};
+                months.forEach(m => monthly[m] = 0);
+                txs.forEach(t => {
+                    const m = (t.tanggal || '').slice(0, 7);
+                    if (monthly.hasOwnProperty(m)) monthly[m] += parseFloat(t.total) || 0;
+                });
+                const vals = Object.values(monthly);
+                const max = Math.max(...vals, 1);
+                const container = $('k-chart');
+                container.innerHTML = '';
+                Object.keys(monthly).forEach((m, i) => {
+                    const h = (monthly[m] / max) * 100;
+                    const bar = document.createElement('div');
+                    bar.className = 'flex-1 bar relative group cursor-default';
+                    bar.style.display = 'flex';
+                    bar.style.flexDirection = 'column-reverse';
+                    bar.innerHTML = `
+                        <div class="bar-fill bg-indigo-500" style="width:100%; height:${h}%"></div>
+                        <div class="mt-1 text-[9px] text-gray-400 text-center">${Picha.formatRupiah(monthly[m])}</div>
+                    `;
+                    container.appendChild(bar);
+                });
+                const labels = $('k-chart-labels');
+                labels.innerHTML = Object.keys(monthly).map(m => {
+                    const mm = parseInt(m.slice(5, 7));
+                    const nama = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Ags','Sep','Okt','Nov','Des'][mm - 1];
+                    return `<div class="text-center">${nama}</div>`;
+                }).join('');
+
+                // Approval list: cash outflow besar (pembelian stok, setoran penitip, biaya operasional >= batas approval)
+                let limitSetting = null;
+                try { limitSetting = await Picha.get('settings', 'approval_limit'); } catch (e) {}
+                const approvalLimit = limitSetting && limitSetting.value ? parseFloat(limitSetting.value) : 500000;
+                const bigOut = cf.filter(r => r.tipe === 'keluar' && parseFloat(r.jumlah) >= approvalLimit && r.status_approval !== 'approved');
+                const approvalList = $('k-approval-list');
+                if (bigOut.length === 0) {
+                    approvalList.innerHTML = `<div class="text-center text-green-600 text-sm font-medium py-4">Tidak ada pengajuan pengeluaran besar (&ge; ${Picha.formatRupiah(approvalLimit)}) yang menunggu persetujuan.</div>`;
+                } else {
+                    approvalList.innerHTML = bigOut.map(r => `
+                    <div class="p-3 border border-amber-100 bg-amber-50 rounded-lg">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="text-sm font-medium text-gray-900 capitalize">${(r.kategori || '').replace(/_/g, ' ')}</div>
+                                <div class="text-[10px] text-gray-500">${Picha.formatDate(r.tanggal)} &bull; ${r.created_by_name}</div>
+                                <div class="text-[10px] text-gray-500">${r.catatan || '-'}</div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-bold text-rose-700">- ${Picha.formatRupiah(r.jumlah)}</div>
+                                <button onclick="approveExpense(${r.id})" class="mt-1 text-[10px] bg-indigo-600 text-white px-2.5 py-1 rounded hover:bg-indigo-700">Setujui</button>
+                            </div>
+                        </div>
+                    </div>
+                    `).join('');
+                }
+
+                // Transaksi terbaru
+                const recent = txs.filter(t => t.status !== 'dibatalkan').sort((a, b) => new Date(b.tanggal) - new Date(a.tanggal)).slice(0, 8);
+                $('k-recent-body').innerHTML = recent.map(t => `
+                <tr class="text-sm">
+                    <td class="py-3 text-gray-600 text-[10px]">${Picha.formatDate(t.tanggal)}</td>
+                    <td class="py-3 font-medium text-gray-900 text-[10px]">${t.no_transaksi}</td>
+                    <td class="py-3 text-gray-600 text-[10px]">${t.pembeli_nama || '-'}</td>
+                    <td class="py-3 text-right text-gray-600">${Picha.formatRupiah(t.total)}</td>
+                    <td class="py-3"><span class="badge ${t.metode === 'tunai' ? 'bg-masuk' : 'bg-keluar'} text-[10px]">${t.metode === 'tunai' ? 'Tunai' : 'Hutang'}</span></td>
+                </tr>
+                `).join('') || '<tr><td colspan="5" class="py-4 text-center text-gray-400">Belum ada transaksi.</td></tr>';
+
+                // Piutang tertinggi
+                const topPiutang = bl.sort((a, b) => (parseFloat(b.sisa_hutang) || 0) - (parseFloat(a.sisa_hutang) || 0)).slice(0, 5);
+                $('k-piutang-list').innerHTML = topPiutang.map(d => `
+                <div class="flex justify-between items-center p-3 border-b border-gray-50 last:border-0">
+                    <div>
+                        <div class="text-sm font-medium text-gray-900">${d.pembeli_nama}${d.pembeli_kelas ? ` <span class="text-[10px] text-gray-400">(${d.pembeli_kelas})</span>` : ''}</div>
+                        <div class="text-[10px] text-gray-500">Sisa: ${Picha.formatRupiah(d.sisa_hutang)}</div>
+                    </div>
+                    <span class="badge ${d.status === 'lunas_sebagian' ? 'stt-sebagian' : 'stt-belum'} text-[10px]">${d.status.replace('_', ' ')}</span>
+                </div>
+                `).join('') || '<div class="text-center text-gray-400 text-sm italic p-4">Tidak ada piutang.</div>';
+            }
+
+            window.approveExpense = async (cfId) => {
+                if (!confirm('Setujui pengeluaran besar ini?')) return;
+                try {
+                    await Picha.approveCashFlow(cfId);
+                    alert('Pengeluaran telah disetujui dan dicatat dalam audit trail.');
+                    loadData();
+                } catch (err) { alert('Gagal: ' + err.message); }
+            };
+
+            Picha.renderUserInfo();
+            loadData();
+
+        })();
+    </script>
+    <script>
+        Picha.initSidebar();
+    </script>
+</body>
+</html>

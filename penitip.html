@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Penitip - Kasir Koperasi Picha</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+        .sidebar-indigo { background-color: #4F46E5; }
+        .nav-item.active { background-color: rgba(255, 255, 255, 0.15); border-left: 4px solid #FFFFFF; }
+        .nav-item:hover:not(.active) { background-color: rgba(255, 255, 255, 0.08); }
+        .glass-card { background: #FFFFFF; border-radius: 0.75rem; box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); border: 1px solid rgb(243 244 246); }
+        @media (min-width: 768px) { .hide-on-desktop { display: none !important; } }
+        @media (max-width: 767px) { #sidebar { transform: translatex(-100%); } }
+        .badge { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.125rem 0.5rem; border-radius: 9999px; font-size: 0.7rem; font-weight: 600; }
+        .stt-aktif { background: #dcfce7; color: #166534; }
+        .stt-nonaktif { background: #e5e7eb; color: #374151; }
+    </style>
+    <link rel="stylesheet" href="css/app.css">
+</head>
+<body class="bg-gray-50 text-gray-900 overflow-x-hidden">
+
+    <div id="mobile-overlay" class="fixed inset-0 z-40 bg-black/60 hidden backdrop-blur-sm transition-opacity duration-300"></div>
+
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 sidebar-indigo text-white transform -translate-x-full transition-transform duration-300 ease-in-out">
+        <div class="flex items-center justify-between h-16 px-5 border-b border-white/10 bg-indigo-500/90">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 bg-white rounded-xl flex items-center justify-center text-indigo-600 font-bold text-xl shadow-sm">P</div>
+                <span class="font-bold text-lg tracking-tight">Kasir Picha</span>
+            </div>
+            <button id="close-sidebar" class="text-white/70 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        <nav class="mt-6 px-4 space-y-1">
+            <div class="px-3 text-[10px] font-semibold text-indigo-100 uppercase tracking-wider mb-5">Menu Utama</div>
+            <a href="penitip.html" class="nav-item active flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl transition-colors group">
+                <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center group-hover:bg-white/30"><svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg></div>
+                <span>Dashboard &amp; Barang Saya</span>
+            </a>
+        </nav>
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-white/10 bg-indigo-500/90">
+            <div class="flex items-center gap-3 px-2 py-3 rounded-xl bg-white/10 hover:bg-white/20 transition-colors cursor-pointer group" onclick="window.location.href='index.html'">
+                <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-[10px] font-medium group-hover:text-white">?</div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-xs font-medium text-white truncate">Versi 2.0.0</p>
+                    <p class="text-[10px] text-indigo-200 truncate">Koperasi Picha</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <div id="main-wrapper" class="flex flex-col min-h-screen">
+        <header class="fixed-header fixed top-0 left-0 right-0 z-40 h-16 sidebar-indigo text-white flex items-center justify-between px-4 sm:px-6 shadow-sm border-b border-white/10">
+            <div class="flex items-center gap-3">
+                <button id="open-sidebar" class="text-indigo-100 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+                <div class="hidden sm:flex items-center gap-2 text-[10px] font-medium text-indigo-200 uppercase tracking-wider">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path></svg>
+                    <span>Barang Titipan Saya</span>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-3 pl-4 border-l border-white/10">
+                    <div class="text-right hidden sm:block">
+                        <p class="text-sm font-bold text-white user-name leading-tight">Penitip / Anggota</p>
+                        <p class="text-xs text-indigo-200 user-role">Penyetor Barang Titipan</p>
+                    </div>
+                    <div class="w-9 h-9 rounded-full bg-white flex items-center justify-center text-indigo-600 font-bold text-lg shadow-md user-avatar">PA</div>
+                    <button onclick="Picha.logout()" class="ml-2 text-indigo-200 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10 hidden sm:block" title="Logout">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-1 pt-20 sm:pt-0 pb-12 px-4 sm:px-6 lg:px-8 max-w-none w-full">
+            <div class="max-w-7xl mx-auto w-full">
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900">Barang Titipan Saya</h1>
+                        <p class="text-gray-500 text-sm mt-1">Pantau status barang titipan, riwayat penjualan, dan saldo bagi hasil Anda</p>
+                        <p class="text-[10px] text-indigo-400 mt-1 font-medium">Akses terbatas: hanya bisa melihat data Anda sendiri.</p>
+                    </div>
+                </div>
+
+                <!-- Ringkasan saldo bagi hasil -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
+                    <div class="glass-card p-6 flex items-center justify-between group">
+                        <div>
+                            <p class="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-1">Total Barang Titip</p>
+                            <h3 class="text-2xl font-bold text-gray-900 leading-tight" id="pt-total-barang">0</h3>
+                            <p class="text-[10px] text-gray-500 mt-2">Barang aktif Anda</p>
+                        </div>
+                        <div class="w-12 h-12 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center shadow-md group-hover:scale-105 transition-transform duration-200">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                    </div>
+                    <div class="glass-card p-6 flex items-center justify-between group">
+                        <div>
+                            <p class="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-1">Total Terjual</p>
+                            <h3 class="text-2xl font-bold text-gray-900 leading-tight" id="pt-terjual">0</h3>
+                            <p class="text-[10px] text-green-600 font-medium mt-2">Barang laku</p>
+                        </div>
+                        <div class="w-12 h-12 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shadow-md group-hover:scale-105 transition-transform duration-200">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        </div>
+                    </div>
+                    <div class="glass-card p-6 flex items-center justify-between group">
+                        <div>
+                            <p class="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-1">Saldo Bagi Hasil</p>
+                            <h3 class="text-2xl font-bold text-gray-900 leading-tight" id="pt-saldo">Rp 0</h3>
+                            <p class="text-[10px] text-indigo-600 font-medium mt-2">Siap disetor</p>
+                        </div>
+                        <div class="w-12 h-12 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center shadow-md group-hover:scale-105 transition-transform duration-200">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Daftar barang titip -->
+                <div class="glass-card p-6 mb-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="font-bold text-gray-900 text-lg">Status Barang yang Dititipkan</h3>
+                        <span class="text-[10px] text-gray-400 font-medium" id="pt-consignor-label">Data Penitip</span>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse min-w-full">
+                            <thead>
+                                <tr class="text-[10px] font-semibold text-gray-400 uppercase tracking-wider border-b border-gray-100">
+                                    <th class="pb-4 pr-2">Kode</th>
+                                    <th class="pb-4 pr-2">Nama Barang</th>
+                                    <th class="pb-4 text-right">Harga Jual</th>
+                                    <th class="pb-4 text-center">Jumlah Dititip</th>
+                                    <th class="pb-4 text-center">Terjual</th>
+                                    <th class="pb-4 text-center">Sisa Stok</th>
+                                    <th class="pb-4 text-center">Bagi Hasil</th>
+                                    <th class="pb-4">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pt-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Riwayat penjualan barang titip -->
+                <div class="glass-card p-6 mb-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="font-bold text-gray-900 text-lg">Riwayat Penjualan Saya</h3>
+                        <p class="text-[10px] text-gray-500">Rekap harian/periodik barang titipan yang laku</p>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse min-w-full">
+                            <thead>
+                                <tr class="text-[10px] font-semibold text-gray-400 uppercase tracking-wider border-b border-gray-100">
+                                    <th class="pb-4 pr-2">No Transaksi</th>
+                                    <th class="pb-4 pr-2">Tanggal</th>
+                                    <th class="pb-4 pr-2">Barang</th>
+                                    <th class="pb-4 text-center">Qty</th>
+                                    <th class="pb-4 text-right">Total Jual</th>
+                                    <th class="pb-4 text-right">Bagi Hasil Anda</th>
+                                    <th class="pb-4">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pt-history-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Riwayat Setoran Bagi Hasil yang Sudah Diterima (SOP 3.3) -->
+                <div class="glass-card p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h3 class="font-bold text-gray-900 text-lg">Riwayat Setoran yang Sudah Diterima</h3>
+                            <p class="text-[10px] text-gray-500">Catatan pembayaran hasil penjualan dari pengurus koperasi kepada Anda</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-[10px] text-gray-400 uppercase block">Total Sudah Diterima</span>
+                            <span class="text-sm font-bold text-emerald-600" id="pt-total-setoran">Rp 0</span>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse min-w-full">
+                            <thead>
+                                <tr class="text-[10px] font-semibold text-gray-400 uppercase tracking-wider border-b border-gray-100">
+                                    <th class="pb-4 pr-2">Tanggal Setor</th>
+                                    <th class="pb-4 text-right">Nominal Diterima</th>
+                                    <th class="pb-4 pr-2">Metode</th>
+                                    <th class="pb-4 pr-2">Petugas Pengurus</th>
+                                    <th class="pb-4">Catatan</th>
+                                    <th class="pb-4">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pt-payout-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+    </div>
+
+    <script src="js/core.js"></script>
+    <script>
+        (async function () {
+            await Picha.init();
+            await Picha.protectPage();
+            const $ = (id) => document.getElementById(id);
+
+            async function loadData() {
+                const user = Picha.getCurrentUser();
+                const consignors = await Picha.list('consignors');
+                const allConsItems = await Picha.list('consignment_items');
+                const allTx = await Picha.list('transactions');
+                const txMap = {};
+                allTx.forEach(t => txMap[t.id] = t);
+                const details = (await Picha.list('transaction_details')).filter(d => {
+                    const tx = txMap[d.transaksi_id];
+                    return !tx || tx.status !== 'dibatalkan';
+                });
+
+                // Isolasi RBAC: Penitip hanya melihat data miliknya sendiri
+                let myConsignor = null;
+                if (user && user.consignor_id) {
+                    myConsignor = consignors.find(c => c.id == user.consignor_id);
+                }
+                if (!myConsignor && user) {
+                    myConsignor = consignors.find(c => (c.nama || '').toLowerCase() === (user.name || '').toLowerCase());
+                }
+                if (!myConsignor) {
+                    myConsignor = consignors[0] || null;
+                }
+
+                if (myConsignor) {
+                    $('pt-consignor-label').textContent = `${myConsignor.kode} — ${myConsignor.nama}`;
+                    const myItems = allConsItems.filter(ci => ci.consignor_id == myConsignor.id);
+                    const myDetails = details.filter(d => d.is_consignment == 1 && d.consignor_id == myConsignor.id);
+                    const myPayouts = await Picha.getPayouts({ consignor_id: myConsignor.id });
+
+                    const totalTerjual = myDetails.reduce((s, d) => s + (parseInt(d.qty) || 0), 0);
+                    const totalSetoran = myPayouts.reduce((s, p) => s + (parseFloat(p.jumlah) || 0), 0);
+
+                    $('pt-total-barang').textContent = myItems.length;
+                    $('pt-terjual').textContent = totalTerjual;
+                    $('pt-saldo').textContent = Picha.formatRupiah(myConsignor.saldo_bagi_hasil || 0);
+                    $('pt-total-setoran').textContent = Picha.formatRupiah(totalSetoran);
+
+                    // Tabel barang titip (Jumlah dititip, terjual, sisa sesuai SOP 3.3)
+                    const tbody = $('pt-table-body');
+                    tbody.innerHTML = myItems.map(ci => {
+                        const terjual = myDetails.filter(d => d.item_id == ci.id).reduce((a, d) => a + (parseInt(d.qty) || 0), 0);
+                        const sisa = parseInt(ci.stok) || 0;
+                        const dititip = sisa + terjual;
+                        return `
+                        <tr class="text-sm border-b border-gray-50">
+                            <td class="py-3 text-gray-600">${ci.kode}</td>
+                            <td class="py-3 font-medium text-gray-900">${ci.nama}</td>
+                            <td class="py-3 text-right text-gray-600">${Picha.formatRupiah(ci.harga_jual)}</td>
+                            <td class="py-3 text-center font-medium text-gray-700">${dititip}</td>
+                            <td class="py-3 text-center font-medium text-emerald-600">${terjual}</td>
+                            <td class="py-3 text-center"><span class="px-2 py-0.5 rounded-full ${sisa <= parseInt(ci.stok_min || 5) ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'} text-[10px] font-bold">${sisa}</span></td>
+                            <td class="py-3 text-center text-gray-600 text-[10px]">${ci.bagi_hasil_nominal > 0 ? Picha.formatRupiah(ci.bagi_hasil_nominal) + '/pcs' : ci.bagi_hasil_persen + '%'}</td>
+                            <td class="py-3"><span class="badge ${ci.status === 'aktif' ? 'stt-aktif' : 'stt-nonaktif'}">${ci.status === 'aktif' ? 'Aktif' : ci.status === 'selesai' ? 'Selesai' : 'Nonaktif'}</span></td>
+                        </tr>
+                        `;
+                    }).join('') || '<tr><td colspan="8" class="py-4 text-center text-gray-400">Tidak ada barang titip.</td></tr>';
+
+                    // Riwayat penjualan
+                    const hbody = $('pt-history-body');
+                    myDetails.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                    hbody.innerHTML = myDetails.map(d => {
+                        const tx = txMap[d.transaksi_id];
+                        const noTrx = tx ? tx.no_transaksi : ('TRX-' + (d.transaksi_id || '-'));
+                        return `
+                        <tr class="text-sm border-b border-gray-50">
+                            <td class="py-3 text-gray-600">${noTrx}</td>
+                            <td class="py-3 text-gray-600 text-[10px]">${Picha.formatDate(d.created_at)}</td>
+                            <td class="py-3 font-medium text-gray-900 truncate" title="${d.nama_snapshot}">${d.nama_snapshot}</td>
+                            <td class="py-3 text-center text-gray-600">${d.qty}</td>
+                            <td class="py-3 text-right text-gray-600">${Picha.formatRupiah(d.harga_satuan * d.qty)}</td>
+                            <td class="py-3 text-right font-medium text-indigo-600">${Picha.formatRupiah(d.bagi_hasil_ke_penitip)}</td>
+                            <td class="py-3"><span class="badge stt-aktif">Terjual</span></td>
+                        </tr>
+                        `;
+                    }).join('') || '<tr><td colspan="7" class="py-4 text-center text-gray-400">Belum ada penjualan.</td></tr>';
+
+                    // Riwayat setoran yang sudah diterima
+                    const pbody = $('pt-payout-body');
+                    pbody.innerHTML = myPayouts.map(p => `
+                        <tr class="text-sm border-b border-gray-50">
+                            <td class="py-3 text-gray-600">${Picha.formatDateTime(p.tanggal)}</td>
+                            <td class="py-3 text-right font-bold text-emerald-600">${Picha.formatRupiah(p.jumlah)}</td>
+                            <td class="py-3 text-gray-600 uppercase text-[10px]">${p.metode || 'tunai'}</td>
+                            <td class="py-3 text-gray-600 text-[10px]">${p.created_by_name || '-'}</td>
+                            <td class="py-3 text-gray-600 text-[10px]">${p.catatan || '-'}</td>
+                            <td class="py-3"><span class="badge stt-aktif">Diterima</span></td>
+                        </tr>
+                    `).join('') || '<tr><td colspan="6" class="py-4 text-center text-gray-400">Belum ada riwayat setoran diterima.</td></tr>';
+                } else {
+                    $('pt-total-barang').textContent = '0';
+                    $('pt-terjual').textContent = '0';
+                    $('pt-saldo').textContent = 'Rp 0';
+                    $('pt-table-body').innerHTML = '<tr><td colspan="8" class="py-4 text-center text-gray-400">Tidak ada data barang titip.</td></tr>';
+                    $('pt-history-body').innerHTML = '<tr><td colspan="7" class="py-4 text-center text-gray-400">Belum ada data.</td></tr>';
+                    $('pt-payout-body').innerHTML = '<tr><td colspan="6" class="py-4 text-center text-gray-400">Belum ada data.</td></tr>';
+                }
+            }
+
+            Picha.renderUserInfo();
+            loadData();
+
+        })();
+    </script>
+    <script>
+        Picha.initSidebar();
+    </script>
+</body>
+</html>

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelola Barang - Kasir Koperasi Picha</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+        .sidebar-indigo { background-color: #4F46E5; }
+        .nav-item.active { background-color: rgba(255, 255, 255, 0.15); border-left: 4px solid #FFFFFF; }
+        .nav-item:hover:not(.active) { background-color: rgba(255, 255, 255, 0.08); }
+        .glass-card { background: #FFFFFF; border-radius: 0.75rem; box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); border: 1px solid rgb(243 244 246); }
+        @media (min-width: 768px) { .hide-on-desktop { display: none !important; } }
+        @media (max-width: 767px) { #sidebar { transform: translatex(-100%); } }
+        .badge { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.125rem 0.5rem; border-radius: 9999px; font-size: 0.7rem; font-weight: 600; }
+        .stt-aktif { background: #dcfce7; color: #166534; }
+        .stt-nonaktif { background: #e5e7eb; color: #374151; }
+    </style>
+    <link rel="stylesheet" href="css/app.css">
+</head>
+<body class="bg-gray-50 text-gray-900 overflow-x-hidden">
+
+    <div id="mobile-overlay" class="fixed inset-0 z-40 bg-black/60 hidden backdrop-blur-sm transition-opacity duration-300"></div>
+
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 sidebar-indigo text-white transform -translate-x-full transition-transform duration-300 ease-in-out">
+        <div class="flex items-center justify-between h-16 px-5 border-b border-white/10 bg-indigo-500/90">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 bg-white rounded-xl flex items-center justify-center text-indigo-600 font-bold text-xl shadow-sm">P</div>
+                <span class="font-bold text-lg tracking-tight">Kasir Picha</span>
+            </div>
+            <button id="close-sidebar" class="text-white/70 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        <nav class="mt-6 px-4 space-y-1">
+            <div class="px-3 text-[10px] font-semibold text-indigo-100 uppercase tracking-wider mb-5">Menu Utama</div>
+            <a href="index.html" class="nav-item flex items-center gap-3 px-4 py-3 text-sm font-medium text-indigo-200 rounded-xl transition-colors group">
+                <div class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center group-hover:bg-white/20"><svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg></div>
+                <span>Dashboard</span>
+            </a>
+            <a href="kasir.html" class="nav-item flex items-center gap-3 px-4 py-3 text-sm font-medium text-indigo-200 rounded-xl transition-colors group">
+                <div class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center group-hover:bg-white/20"><svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg></div>
+                <span>Transaksi Kasir</span>
+            </a>
+            <a href="pengurus.html" class="nav-item flex items-center gap-3 px-4 py-3 text-sm font-medium text-indigo-200 rounded-xl transition-colors group">
+                <div class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center group-hover:bg-white/20"><svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg></div>
+                <span>Manajemen</span>
+            </a>
+            <a href="users.html" class="nav-item flex items-center gap-3 px-4 py-3 text-sm font-medium text-indigo-200 rounded-xl transition-colors group">
+                <div class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center group-hover:bg-white/20"><svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg></div>
+                <span>Kelola Pengguna</span>
+            </a>
+            <a href="barang.html" class="nav-item active flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl transition-colors group">
+                <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center group-hover:bg-white/30"><svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg></div>
+                <span>Kelola Barang</span>
+            </a>
+            <a href="aruskas.html" class="nav-item flex items-center gap-3 px-4 py-3 text-sm font-medium text-indigo-200 rounded-xl transition-colors group">
+                <div class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center group-hover:bg-white/20"><svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg></div>
+                <span>Arus Kas</span>
+            </a>
+            <a href="laporan.html" class="nav-item flex items-center gap-3 px-4 py-3 text-sm font-medium text-indigo-200 rounded-xl transition-colors group">
+                <div class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center group-hover:bg-white/20"><svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg></div>
+                <span>Laporan</span>
+            </a>
+            <div class="px-3 text-[10px] font-semibold text-indigo-100 uppercase tracking-wider mt-10 mb-5">Sistem</div>
+            <a href="backup.html" class="nav-item flex items-center gap-3 px-4 py-3 text-sm font-medium text-indigo-200 rounded-xl transition-colors group">
+                <div class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center group-hover:bg-white/20"><svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg></div>
+                <span>Backup &amp; Pulih</span>
+            </a>
+            <a href="audit.html" class="nav-item flex items-center gap-3 px-4 py-3 text-sm font-medium text-indigo-200 rounded-xl transition-colors group">
+                <div class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center group-hover:bg-white/20"><svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg></div>
+                <span>Audit Trail</span>
+            </a>
+        </nav>
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-white/10 bg-indigo-500/90">
+            <div class="flex items-center gap-3 px-2 py-3 rounded-xl bg-white/10 hover:bg-white/20 transition-colors cursor-pointer group" onclick="window.location.href='index.html'">
+                <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-[10px] font-medium group-hover:text-white">?</div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-xs font-medium text-white truncate">Versi 2.0.0</p>
+                    <p class="text-[10px] text-indigo-200 truncate">Koperasi Picha</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <div id="main-wrapper" class="flex flex-col min-h-screen">
+        <header class="fixed-header fixed top-0 left-0 right-0 z-40 h-16 sidebar-indigo text-white flex items-center justify-between px-4 sm:px-6 shadow-sm border-b border-white/10">
+            <div class="flex items-center gap-3">
+                <button id="open-sidebar" class="text-indigo-100 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+                <div class="hidden sm:flex items-center gap-2 text-[10px] font-medium text-indigo-200 uppercase tracking-wider">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path></svg>
+                    <span>Kelola Barang</span>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-3 pl-4 border-l border-white/10">
+                    <div class="text-right hidden sm:block">
+                        <p class="text-sm font-bold text-white user-name leading-tight">Admin Picha</p>
+                        <p class="text-xs text-indigo-200 user-role">Super Administrator</p>
+                    </div>
+                    <div class="w-9 h-9 rounded-full bg-white flex items-center justify-center text-indigo-600 font-bold text-lg shadow-md user-avatar">AP</div>
+                    <button onclick="Picha.logout()" class="ml-2 text-indigo-200 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10 hidden sm:block" title="Logout">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-1 pt-20 sm:pt-0 pb-12 px-4 sm:px-6 lg:px-8 max-w-none w-full">
+            <div class="max-w-7xl mx-auto w-full">
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900">Stok &amp; Barang Koperasi</h1>
+                        <p class="text-gray-500 text-sm mt-1">Kelola stok, harga, dan kategori barang milik koperasi</p>
+                    </div>
+                    <button id="btn-add-item" onclick="openItemModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 text-sm font-medium rounded-xl shadow-lg shadow-indigo-200 transition-colors flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        Tambah Barang
+                    </button>
+                </div>
+
+                <div class="glass-card p-0">
+                    <div class="p-4 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                        <div class="relative w-full sm:w-80">
+                            <div class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg></div>
+                            <input type="text" id="item-search" class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm" placeholder="Cari barang...">
+                        </div>
+                        <select id="item-stok-filter" class="w-full sm:w-auto px-3 py-2.5 text-sm border border-gray-200 rounded-xl bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option value="all">Semua Stok</option>
+                            <option value="low">Stok Menipis</option>
+                            <option value="ok">Aman</option>
+                        </select>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse min-w-full">
+                            <thead>
+                                <tr class="text-[10px] font-semibold text-gray-400 uppercase tracking-wider border-b border-gray-100">
+                                    <th class="pb-4 pr-2">Kode</th>
+                                    <th class="pb-4 pr-2">Nama Barang</th>
+                                    <th class="pb-4 pr-2">Kategori</th>
+                                    <th class="pb-4 text-right">Harga</th>
+                                    <th class="pb-4 text-center">Stok</th>
+                                    <th class="pb-4 text-center">Min</th>
+                                    <th class="pb-4">Status</th>
+                                    <th class="pb-4" id="th-aksi">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="item-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Modal -->
+        <div id="modal-backdrop" class="fixed inset-0 z-50 hidden">
+            <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeItemModal()"></div>
+            <div class="absolute inset-0 flex items-center justify-center p-4">
+                <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto" id="modal-content"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="js/core.js"></script>
+    <script>
+        const $ = (id) => document.getElementById(id);
+
+        (async function () {
+            await Picha.init();
+            await Picha.protectPage();
+            Picha.renderUserInfo();
+
+            const user = Picha.getCurrentUser();
+            const canEdit = user && (user.role === 'admin' || user.role === 'pengurus');
+            if (!canEdit) {
+                if ($('btn-add-item')) $('btn-add-item').classList.add('hidden');
+                if ($('th-aksi')) $('th-aksi').classList.add('hidden');
+            }
+
+            async function renderBarang() {
+                const q = $('item-search').value.toLowerCase();
+                const filter = $('item-stok-filter').value;
+                let items = await Picha.list('items');
+                items = items.filter(i => (i.nama || '').toLowerCase().includes(q) || (i.kode || '').toLowerCase().includes(q));
+                if (filter === 'low') items = items.filter(i => parseInt(i.stok) <= parseInt(i.stok_min));
+                if (filter === 'ok') items = items.filter(i => parseInt(i.stok) > parseInt(i.stok_min));
+                items.sort((a, b) => (a.kode || '').localeCompare(b.kode || ''));
+                const tbody = $('item-table-body');
+                tbody.innerHTML = items.map(i => `
+                <tr class="text-sm border-b border-gray-50">
+                    <td class="py-3 text-gray-600">${i.kode}</td>
+                    <td class="py-3 font-medium text-gray-900">${i.nama}</td>
+                    <td class="py-3 text-gray-600">${i.kategori}</td>
+                    <td class="py-3 text-right text-gray-600">${Picha.formatRupiah(i.harga_jual)}</td>
+                    <td class="py-3 text-center"><span class="px-2 py-0.5 rounded-full ${parseInt(i.stok) <= parseInt(i.stok_min) ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'} text-[10px] font-bold">${i.stok}</span></td>
+                    <td class="py-3 text-center text-gray-600 text-[10px]">${i.stok_min}</td>
+                    <td class="py-3"><span class="badge ${i.is_active === 1 ? 'stt-aktif' : 'stt-nonaktif'}">${i.is_active === 1 ? 'Aktif' : 'Nonaktif'}</span></td>
+                    ${canEdit ? `
+                    <td class="py-3">
+                        <button onclick="openItemModal(${i.id})" class="text-[10px] text-indigo-600 hover:underline mr-3">Edit</button>
+                        <button onclick="toggleItem(${i.id}, ${i.is_active})" class="text-[10px] text-gray-600 hover:underline">${i.is_active === 1 ? 'Nonaktifkan' : 'Aktifkan'}</button>
+                    </td>` : ''}
+                </tr>
+                `).join('') || '<tr><td colspan="8" class="py-4 text-center text-gray-400">Tidak ada data.</td></tr>';
+            }
+
+            $('item-search').addEventListener('input', renderBarang);
+            $('item-stok-filter').addEventListener('change', renderBarang);
+
+            async function openItemModal(id = null) {
+                const item = id ? await Picha.get('items', id) : null;
+                $('modal-content').innerHTML = `
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-bold text-gray-900">${id ? 'Edit' : 'Tambah'} Barang</h3>
+                        <button onclick="closeItemModal()" class="text-gray-400 hover:text-gray-600">&times;</button>
+                    </div>
+                    <form id="item-form" class="space-y-4">
+                        <input type="hidden" id="item-id" value="${id || ''}">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-[10px] font-semibold text-gray-400 uppercase mb-1">Kode</label>
+                                <input type="text" id="item-kode" required class="w-full px-3 py-2 rounded-lg border border-gray-200 bg-gray-50 focus:ring-2 focus:ring-indigo-500 text-sm" value="${item ? item.kode : ''}">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-semibold text-gray-400 uppercase mb-1">Nama Barang</label>
+                                <input type="text" id="item-nama" required class="w-full px-3 py-2 rounded-lg border border-gray-200 bg-gray-50 focus:ring-2 focus:ring-indigo-500 text-sm" value="${item ? item.nama : ''}">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-semibold text-gray-400 uppercase mb-1">Kategori</label>
+                                <input type="text" id="item-kategori" class="w-full px-3 py-2 rounded-lg border border-gray-200 bg-gray-50 focus:ring-2 focus:ring-indigo-500 text-sm" value="${item ? item.kategori : ''}" placeholder="Alat Tulis">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-semibold text-gray-400 uppercase mb-1">Satuan</label>
+                                <input type="text" id="item-satuan" class="w-full px-3 py-2 rounded-lg border border-gray-200 bg-gray-50 focus:ring-2 focus:ring-indigo-500 text-sm" value="${item ? item.satuan : ''}" placeholder="buah">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-[10px] font-semibold text-gray-400 uppercase mb-1">Harga Jual</label>
+                                <input type="number" id="item-harga" required class="w-full px-3 py-2 rounded-lg border border-gray-200 bg-gray-50 focus:ring-2 focus:ring-indigo-500 text-sm" value="${item ? item.harga_jual : ''}">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-semibold text-gray-400 uppercase mb-1">Stok</label>
+                                <input type="number" id="item-stok" required class="w-full px-3 py-2 rounded-lg border border-gray-200 bg-gray-50 focus:ring-2 focus:ring-indigo-500 text-sm" value="${item ? item.stok : ''}">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-semibold text-gray-400 uppercase mb-1">Stok Min</label>
+                                <input type="number" id="item-stokmin" class="w-full px-3 py-2 rounded-lg border border-gray-200 bg-gray-50 focus:ring-2 focus:ring-indigo-500 text-sm" value="${item ? item.stok_min : ''}">
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2 mt-2">
+                            <input type="checkbox" id="item-active" ${item ? item.is_active === 1 ? 'checked' : '' : 'checked'} class="rounded text-indigo-600 focus:ring-indigo-500">
+                            <label class="text-sm text-gray-700">Aktif</label>
+                        </div>
+                        <div class="flex justify-end gap-3 mt-6">
+                            <button type="button" onclick="closeItemModal()" class="px-4 py-2 text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50">Batal</button>
+                            <button type="submit" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+                `;
+                $('modal-backdrop').classList.remove('hidden');
+                $('item-form').onsubmit = async (e) => {
+                    e.preventDefault();
+                    const data = {
+                        kode: $('item-kode').value,
+                        nama: $('item-nama').value,
+                        kategori: $('item-kategori').value || 'Umum',
+                        satuan: $('item-satuan').value || 'buah',
+                        harga_jual: parseFloat($('item-harga').value) || 0,
+                        stok: parseInt($('item-stok').value) || 0,
+                        stok_min: parseInt($('item-stokmin').value) || 0,
+                        is_consignment: 0,
+                        consignor_id: null,
+                        is_active: $('item-active').checked ? 1 : 0,
+                    };
+                    try {
+                        if (id) await Picha.put('items', { id, ...data });
+                        else await Picha.insert('items', data);
+                        await Picha.logAudit(Picha.getCurrentUser().id, Picha.getCurrentUser().name, id ? 'UPDATE_ITEM' : 'CREATE_ITEM', 'items', id || null, item, data);
+                        closeItemModal();
+                        renderBarang();
+                    } catch (err) { alert('Gagal menyimpan: ' + err.message); }
+                };
+            }
+            window.openItemModal = openItemModal;
+
+            async function toggleItem(id, isActive) {
+                await Picha.put('items', { id, is_active: isActive ? 0 : 1 });
+                await Picha.logAudit(Picha.getCurrentUser().id, Picha.getCurrentUser().name, 'TOGGLE_ITEM', 'items', id, null, { is_active: isActive ? 0 : 1 });
+                renderBarang();
+            }
+            window.toggleItem = toggleItem;
+
+            window.closeItemModal = () => {
+                $('modal-backdrop').classList.add('hidden');
+                $('modal-content').innerHTML = '';
+            };
+
+            renderBarang();
+        })();
+    </script>
+    <script>
+        Picha.initSidebar();
+    </script>
+</body>
+</html>
