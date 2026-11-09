@@ -38,12 +38,12 @@
             <form id="login-form" class="space-y-4">
                 <div>
                     <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">Email Pengguna</label>
-                    <input type="email" id="login-email" required value="admin@picha.id" class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all text-sm" placeholder="nama@picha.id">
+                    <input type="email" id="login-email" required class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all text-sm" placeholder="nama@picha.id">
                 </div>
 
                 <div>
                     <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">Kata Sandi</label>
-                    <input type="password" id="login-password" required value="admin123" class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all text-sm" placeholder="••••••••">
+                    <input type="password" id="login-password" required class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all text-sm" placeholder="••••••••">
                 </div>
 
                 <div id="login-error" class="hidden p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-medium"></div>
@@ -61,26 +61,7 @@
                 </button>
             </form>
 
-            <!-- Tombol Pilih Akun Cepat -->
-            <div class="mt-6 pt-5 border-t border-gray-100">
-                <p class="text-[11px] font-semibold text-gray-400 uppercase tracking-wider text-center mb-2.5">Pilihan Cepat Akun Demo</p>
-                <div class="grid grid-cols-2 gap-2 text-xs">
-                    <button type="button" onclick="quickFill('admin@picha.id', 'admin123')" class="px-2.5 py-1.5 rounded-lg border border-gray-200 hover:bg-indigo-50 hover:text-indigo-700 hover:border-indigo-200 text-gray-600 transition-colors text-left truncate">
-                        <strong>Admin:</strong> admin@picha.id
-                    </button>
-                    <button type="button" onclick="quickFill('kasir@picha.id', 'kasir123')" class="px-2.5 py-1.5 rounded-lg border border-gray-200 hover:bg-indigo-50 hover:text-indigo-700 hover:border-indigo-200 text-gray-600 transition-colors text-left truncate">
-                        <strong>Kasir:</strong> kasir@picha.id
-                    </button>
-                    <button type="button" onclick="quickFill('kepala@picha.id', 'kepala123')" class="px-2.5 py-1.5 rounded-lg border border-gray-200 hover:bg-indigo-50 hover:text-indigo-700 hover:border-indigo-200 text-gray-600 transition-colors text-left truncate">
-                        <strong>Kepala:</strong> kepala@picha.id
-                    </button>
-                    <button type="button" onclick="quickFill('pengurus@picha.id', 'pengurus123')" class="px-2.5 py-1.5 rounded-lg border border-gray-200 hover:bg-indigo-50 hover:text-indigo-700 hover:border-indigo-200 text-gray-600 transition-colors text-left truncate">
-                        <strong>Pengurus:</strong> pengurus@picha.id
-                    </button>
-                </div>
-            </div>
-
-            <div class="mt-6 text-center text-[11px] text-gray-400">
+            <div class="mt-8 pt-6 border-t border-gray-100 text-center text-[11px] text-gray-400">
                 Offline-First (IndexedDB) &bull; Role-Based Access Control &bull; Audit Trail
             </div>
         </div>
@@ -92,12 +73,6 @@
 
     <script src="js/core.js"></script>
     <script>
-        function quickFill(email, pwd) {
-            document.getElementById('login-email').value = email;
-            document.getElementById('login-password').value = pwd;
-            document.getElementById('login-form').requestSubmit();
-        }
-
         (async function () {
             try {
                 if (typeof Picha !== 'undefined' && typeof Picha.init === 'function') {
