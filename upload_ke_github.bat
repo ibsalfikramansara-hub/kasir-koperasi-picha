@@ -72,6 +72,12 @@ if %errorlevel% neq 0 (
     "%GIT_CMD%" branch -M main >nul 2>nul
 )
 
+:: Pastikan identitas commit tersedia (mencegah error Author identity unknown)
+"%GIT_CMD%" config user.name >nul 2>nul
+if %errorlevel% neq 0 "%GIT_CMD%" config user.name "Kasir Picha"
+"%GIT_CMD%" config user.email >nul 2>nul
+if %errorlevel% neq 0 "%GIT_CMD%" config user.email "admin@picha.id"
+
 :: 4. Cek Remote Repository (GitHub)
 echo [3/5] Memeriksa remote origin GitHub...
 "%GIT_CMD%" remote get-url origin >nul 2>nul
