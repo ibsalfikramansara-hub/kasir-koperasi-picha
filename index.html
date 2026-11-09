@@ -3,70 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beranda - Kasir Koperasi Picha</title>
+    <title>Kasir Koperasi Picha</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/app.css">
     <style>
         body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
-        .glass-card { background: #FFFFFF; border-radius: 0.75rem; box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); border: 1px solid rgb(243 244 246); }
+        .glass-card { background: #FFFFFF; border-radius: 1rem; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1); }
     </style>
-    <link rel="stylesheet" href="css/app.css">
 </head>
 <body class="bg-indigo-600 min-h-screen flex items-center justify-center px-4">
 
     <div class="w-full max-w-md">
-        <div class="glass-card p-8 md:p-10 mx-auto">
-            <div class="text-center mb-8">
-                <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center text-indigo-600 mx-auto mb-4">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+        <div class="glass-card p-8 md:p-10 mx-auto text-center">
+            <div class="w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center text-indigo-600 mx-auto mb-4 shadow-sm">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+            </div>
+            
+            <h1 class="text-2xl font-bold text-gray-900 tracking-tight">Kasir Koperasi Picha</h1>
+            <p class="text-gray-500 text-sm mt-1">Sistem Kasir &amp; Inventaris Madrasah v2.0.0</p>
+
+            <div class="mt-8 space-y-4">
+                <div id="loading-spinner" class="flex flex-col items-center justify-center space-y-3">
+                    <div class="w-7 h-7 border-3 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
+                    <p id="status-text" class="text-xs text-gray-500 font-medium">Memeriksa sesi pengguna...</p>
                 </div>
-                <h2 class="text-2xl font-bold text-gray-900">Kasir Koperasi Picha</h2>
-                <p class="text-gray-500 text-sm mt-2">Sistem Kasir &amp; Inventaris Koperasi Madrasah v2.0.0</p>
+
+                <div id="redirect-action" class="hidden space-y-3 pt-2">
+                    <p id="action-text" class="text-sm text-gray-600">Mengarahkan ke halaman login...</p>
+                    <a href="login.html" class="inline-block w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-4 rounded-xl transition-colors shadow-sm">
+                        Buka Halaman Login
+                    </a>
+                </div>
             </div>
 
-            <div class="space-y-3">
-                <div class="text-center text-[10px] text-gray-400 mb-2">Memeriksa sesi Anda...</div>
-                <div id="redirect-msg" class="hidden text-center space-y-4">
-                    <p class="text-sm text-gray-600">Anda akan diarahkan ke halaman sesuai peran Anda.</p>
-                    <button onclick="window.location.href='login.html'" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-xl transition-colors">
-                        Masuk ke Aplikasi
-                    </button>
-                </div>
-            </div>
-
-            <div class="mt-8 pt-6 border-t border-gray-100 text-center">
-                <p class="text-xs text-gray-400">
+            <div class="mt-8 pt-6 border-t border-gray-100">
+                <p class="text-[11px] text-gray-400">
                     Offline-First (IndexedDB) &bull; Role-Based Access Control &bull; Audit Trail
                 </p>
             </div>
         </div>
 
-        <div class="text-center mt-6 text-xs text-gray-400">
-            Kasir Koperasi Picha v2.0.0 &copy; 2026
+        <div class="text-center mt-6 text-xs text-indigo-200">
+            Kasir Koperasi Picha &copy; 2026 &bull; Madrasah Mandiri
         </div>
     </div>
 
     <script src="js/core.js"></script>
     <script>
         (async function () {
-            await Picha.init();
-            const user = Picha.getCurrentUser();
-            const msg = document.getElementById('redirect-msg');
-            if (user) {
-                msg.classList.remove('hidden');
-                const rolePage = {
-                    admin: 'dashboard-admin.html',
-                    kasir: 'kasir.html',
-                    kepala: 'kepala-koperasi.html',
-                    pengurus: 'pengurus.html',
-                    penitip: 'penitip.html',
-                };
-                setTimeout(() => {
-                    window.location.href = rolePage[user.role] || 'dashboard-admin.html';
-                }, 700);
-            } else {
-                msg.classList.remove('hidden');
-                document.getElementById('redirect-msg').querySelector('p').textContent = 'Anda belum login. Silakan masuk terlebih dahulu.';
+            const statusEl = document.getElementById('status-text');
+            const actionEl = document.getElementById('redirect-action');
+            const actionText = document.getElementById('action-text');
+
+            function toLogin() {
+                window.location.replace('login.html');
+            }
+
+            // Failsafe timer: Jika dalam 2 detik belum redirect, paksa ke login.html
+            const failsafe = setTimeout(() => {
+                toLogin();
+            }, 2000);
+
+            try {
+                if (typeof Picha !== 'undefined' && typeof Picha.init === 'function') {
+                    await Picha.init();
+                    const user = Picha.getCurrentUser();
+                    if (user && user.role) {
+                        clearTimeout(failsafe);
+                        const rolePage = {
+                            admin: 'dashboard-admin.html',
+                            kasir: 'kasir.html',
+                            kepala: 'kepala-koperasi.html',
+                            pengurus: 'pengurus.html',
+                            penitip: 'penitip.html',
+                        };
+                        statusEl.textContent = 'Mengarahkan ke dashboard ' + user.name + '...';
+                        setTimeout(() => {
+                            window.location.replace(rolePage[user.role] || 'dashboard-admin.html');
+                        }, 400);
+                        return;
+                    }
+                }
+                clearTimeout(failsafe);
+                toLogin();
+            } catch (err) {
+                console.warn('[Picha Init Fallback]:', err);
+                clearTimeout(failsafe);
+                toLogin();
             }
         })();
     </script>
