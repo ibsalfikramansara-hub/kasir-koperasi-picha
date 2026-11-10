@@ -60,7 +60,7 @@ start "" "http://localhost:8000/login.html"
 echo.
 echo Tekan CTRL + C di jendela ini untuk menghentikan server.
 echo.
-node server.js
+node test/local_server.js
 pause
 goto MENU
 

@@ -16,7 +16,7 @@ echo [1/3] Memeriksa server lokal Kasir Picha...
 netstat -ano | findstr :8000 >nul 2>nul
 if %errorlevel% neq 0 (
     echo [INFO] Menyalakan server lokal Node.js pada port 8000...
-    start /B node server.js >nul 2>nul
+    start /B node test/local_server.js >nul 2>nul
     timeout /t 2 /nobreak >nul
 ) else (
     echo [OK] Server lokal port 8000 sudah aktif.

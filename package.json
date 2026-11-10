@@ -1,11 +1,11 @@
 {
   "name": "kasir-koperasi-picha",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "Sistem Kasir & Inventaris Koperasi Madrasah Picha Mandiri - Offline-First IndexedDB",
-  "main": "server.js",
+  "main": "index.html",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js",
+    "start": "node test/local_server.js",
+    "dev": "node test/local_server.js",
     "test": "node test/test_suite.js"
   },
   "keywords": [

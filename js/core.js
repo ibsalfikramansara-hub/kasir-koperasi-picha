@@ -575,8 +575,11 @@
   }
 
   function canAccess(role, page) {
+    if (!role || !page) return false;
     const allowed = ROLE_ACCESS[role] || [];
-    return allowed.includes(page);
+    if (allowed.includes('*')) return true;
+    const cleanPage = page.endsWith('.html') ? page : page + '.html';
+    return allowed.includes(page) || allowed.includes(cleanPage);
   }
 
   function redirectByRole(role) {
@@ -604,9 +607,10 @@
       await openDB();
       await initUsers();
       const user = getCurrentUser();
-      const currentPage = window.location.pathname.split('/').pop() || 'login.html';
+      const rawPage = window.location.pathname.split('/').filter(Boolean).pop() || 'login.html';
+      const currentPage = rawPage.endsWith('.html') ? rawPage : rawPage + '.html';
 
-      if (currentPage === 'login.html') {
+      if (currentPage === 'login.html' || currentPage === 'index.html') {
         if (user) _redirect(redirectByRole(user.role));
         return;
       }
