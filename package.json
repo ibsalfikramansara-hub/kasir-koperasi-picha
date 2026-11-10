@@ -1,11 +1,22 @@
 {
   "name": "picha-app",
-  "version": "2.0.5",
-  "private": true,
+  "version": "2.0.6",
   "description": "Sistem Kasir & Inventaris Koperasi Madrasah Picha Mandiri - Offline-First IndexedDB",
+  "main": "server.js",
   "scripts": {
-    "start": "node test/local_server.js",
+    "start": "node server.js",
+    "dev": "node server.js",
     "test": "node test/test_suite.js"
   },
+  "keywords": [
+    "kasir",
+    "koperasi",
+    "madrasah",
+    "pos",
+    "indexeddb",
+    "offline-first",
+    "tailwind"
+  ],
+  "author": "Picha Koperasi Mandiri",
   "license": "MIT"
 }
