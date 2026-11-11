@@ -627,12 +627,24 @@
     try {
       await openDB();
       await initUsers();
+      const urlParams = new URLSearchParams(window.location.search);
+      const isLoggedOut = urlParams.has('logout') || urlParams.has('logged_out');
+      if (isLoggedOut) {
+        try {
+          localStorage.removeItem(SESSION_KEY);
+          localStorage.removeItem('picha_kasir_user');
+          localStorage.removeItem('picha_kasir_session');
+          sessionStorage.clear();
+        } catch (e) {}
+        return;
+      }
+
       const user = getCurrentUser();
       const rawPage = window.location.pathname.split('/').filter(Boolean).pop() || 'login.html';
       const currentPage = rawPage.endsWith('.html') ? rawPage : rawPage + '.html';
 
       if (currentPage === 'login.html' || currentPage === 'index.html') {
-        if (user) _redirect(redirectByRole(user.role));
+        if (user && !isLoggedOut) _redirect(redirectByRole(user.role));
         return;
       }
 
@@ -1187,21 +1199,29 @@
           display: flex !important;
           flex-direction: column !important;
           height: 100vh !important;
+          height: 100dvh !important;
           width: 16rem !important;
           position: fixed !important;
           top: 0 !important;
           bottom: 0 !important;
           left: 0 !important;
+          overflow: hidden !important;
           transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
         }
         #sidebar > nav {
           flex: 1 1 0% !important;
           overflow-y: auto !important;
-          padding-bottom: 1.5rem !important;
-          margin-top: 1rem !important;
+          overflow-x: hidden !important;
+          padding-bottom: 2rem !important;
+          margin-top: 0.5rem !important;
         }
         #sidebar > div:last-child {
+          position: relative !important;
+          bottom: auto !important;
+          left: auto !important;
+          right: auto !important;
           flex-shrink: 0 !important;
+          width: 100% !important;
         }
         @media (min-width: 768px) {
           #sidebar {
