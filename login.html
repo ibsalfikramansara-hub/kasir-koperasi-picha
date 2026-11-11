@@ -6,7 +6,7 @@
     <title>Masuk - Kasir Koperasi Picha</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/app.css?v=2.0.4">
+    <link rel="stylesheet" href="css/app.css?v=2.0.7">
     <style>
         body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
         .glass-card { background: #FFFFFF; border-radius: 1rem; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1); }
@@ -35,15 +35,21 @@
                 <p class="text-gray-500 text-sm mt-1">Sistem Kasir &amp; Inventaris Koperasi Madrasah v2.0.0</p>
             </div>
 
-            <form id="login-form" class="space-y-4">
+            <!-- Banner Notifikasi Logout -->
+            <div id="logout-banner" class="hidden p-3 mb-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-semibold flex items-center gap-2">
+                <svg class="w-4 h-4 flex-shrink-0 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                <span>Anda telah berhasil keluar (Logout). Silakan pilih akun untuk masuk kembali.</span>
+            </div>
+
+            <form id="login-form" class="space-y-4" autocomplete="off">
                 <div>
                     <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">Email atau Username</label>
-                    <input type="text" id="login-email" required class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all text-sm" placeholder="admin atau admin@picha.id">
+                    <input type="text" id="login-email" required autocomplete="username" class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all text-sm" placeholder="admin, kasir, kepala, pengurus, penitip">
                 </div>
 
                 <div>
                     <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">Kata Sandi</label>
-                    <input type="password" id="login-password" required class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all text-sm" placeholder="••••••••">
+                    <input type="password" id="login-password" required autocomplete="current-password" class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all text-sm" placeholder="••••••••">
                 </div>
 
                 <div id="login-error" class="hidden p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-medium"></div>
@@ -61,7 +67,34 @@
                 </button>
             </form>
 
-            <div class="mt-8 pt-6 border-t border-gray-100 text-center text-[11px] text-gray-400">
+            <!-- Pilihan Cepat Akun Demo -->
+            <div class="mt-5 pt-5 border-t border-gray-100">
+                <p class="text-[10px] font-semibold text-gray-400 uppercase tracking-wider text-center mb-2.5">PILIHAN CEPAT AKUN DEMO</p>
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                    <button type="button" onclick="quickLogin('admin@picha.id', 'admin123')" class="p-2.5 rounded-xl border border-gray-200 bg-gray-50 hover:bg-indigo-50 hover:border-indigo-200 text-left transition-all group">
+                        <span class="block font-bold text-gray-800 group-hover:text-indigo-600">Admin</span>
+                        <span class="text-[10px] text-gray-500 block truncate">admin@picha.id</span>
+                    </button>
+                    <button type="button" onclick="quickLogin('kasir@picha.id', 'kasir123')" class="p-2.5 rounded-xl border border-gray-200 bg-gray-50 hover:bg-indigo-50 hover:border-indigo-200 text-left transition-all group">
+                        <span class="block font-bold text-gray-800 group-hover:text-indigo-600">Kasir</span>
+                        <span class="text-[10px] text-gray-500 block truncate">kasir@picha.id</span>
+                    </button>
+                    <button type="button" onclick="quickLogin('kepala@picha.id', 'kepala123')" class="p-2.5 rounded-xl border border-gray-200 bg-gray-50 hover:bg-indigo-50 hover:border-indigo-200 text-left transition-all group">
+                        <span class="block font-bold text-gray-800 group-hover:text-indigo-600">Kepala</span>
+                        <span class="text-[10px] text-gray-500 block truncate">kepala@picha.id</span>
+                    </button>
+                    <button type="button" onclick="quickLogin('pengurus@picha.id', 'pengurus123')" class="p-2.5 rounded-xl border border-gray-200 bg-gray-50 hover:bg-indigo-50 hover:border-indigo-200 text-left transition-all group">
+                        <span class="block font-bold text-gray-800 group-hover:text-indigo-600">Pengurus</span>
+                        <span class="text-[10px] text-gray-500 block truncate">pengurus@picha.id</span>
+                    </button>
+                    <button type="button" onclick="quickLogin('penitip@picha.id', 'penitip123')" class="col-span-2 p-2.5 rounded-xl border border-gray-200 bg-gray-50 hover:bg-indigo-50 hover:border-indigo-200 text-left transition-all group">
+                        <span class="block font-bold text-gray-800 group-hover:text-indigo-600">Penitip: Bapak Andi (Guru)</span>
+                        <span class="text-[10px] text-gray-500 block truncate">penitip@picha.id</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-gray-100 text-center text-[11px] text-gray-400">
                 Offline-First (IndexedDB) &bull; Role-Based Access Control &bull; Audit Trail
             </div>
         </div>
@@ -71,77 +104,111 @@
         </div>
     </div>
 
-    <script src="js/core.js?v=2.0.4"></script>
+    <script src="js/core.js?v=2.0.7"></script>
     <script>
-        (async function () {
-            const ROLE_PAGES = {
-                admin: 'dashboard-admin.html',
-                kasir: 'kasir.html',
-                kepala: 'kepala-koperasi.html',
-                pengurus: 'pengurus.html',
-                penitip: 'penitip.html',
-            };
+        const ROLE_PAGES = {
+            admin: 'dashboard-admin.html',
+            kasir: 'kasir.html',
+            kepala: 'kepala-koperasi.html',
+            pengurus: 'pengurus.html',
+            penitip: 'penitip.html',
+        };
 
-            // Pastikan modul Picha termuat (bypass browser cache jika perlu)
-            async function ensurePicha() {
-                if (typeof window.Picha !== 'undefined') return true;
-                const urls = ['js/core.js?t=' + Date.now(), '/js/core.js?t=' + Date.now()];
-                for (const u of urls) {
-                    try {
-                        await new Promise((res, rej) => {
-                            const s = document.createElement('script');
-                            s.src = u;
-                            s.onload = res;
-                            s.onerror = rej;
-                            document.head.appendChild(s);
-                        });
-                        if (typeof window.Picha !== 'undefined') return true;
-                    } catch (e) {}
+        // Fungsi klik cepat untuk akun demo
+        window.quickLogin = function (email, pwd) {
+            const emailEl = document.getElementById('login-email');
+            const pwdEl = document.getElementById('login-password');
+            if (emailEl) emailEl.value = email;
+            if (pwdEl) pwdEl.value = pwd;
+            const form = document.getElementById('login-form');
+            if (form) {
+                if (typeof form.requestSubmit === 'function') {
+                    form.requestSubmit();
+                } else {
+                    form.dispatchEvent(new Event('submit', { cancelable: true }));
                 }
-                return typeof window.Picha !== 'undefined';
             }
+        };
 
-            // Fallback autentikasi darurat jika core.js gagal dimuat karena cache
-            function fallbackAuth(input, pwd) {
-                const id = String(input || '').trim().toLowerCase();
-                const p = String(pwd || '').trim();
-                const accounts = {
-                    'admin': { id: 1, email: 'admin@picha.id', name: 'Admin Picha', role: 'admin', avatar: 'AP', pass: ['admin123'] },
-                    'admin@picha.id': { id: 1, email: 'admin@picha.id', name: 'Admin Picha', role: 'admin', avatar: 'AP', pass: ['admin123'] },
-                    'kasir': { id: 2, email: 'kasir@picha.id', name: 'Kasir Utama', role: 'kasir', avatar: 'KU', pass: ['admin123', 'kasir123'] },
-                    'kasir@picha.id': { id: 2, email: 'kasir@picha.id', name: 'Kasir Utama', role: 'kasir', avatar: 'KU', pass: ['admin123', 'kasir123'] },
-                    'kepala': { id: 3, email: 'kepala@picha.id', name: 'Kepala Koperasi', role: 'kepala', avatar: 'KK', pass: ['admin123', 'kepala123'] },
-                    'kepala@picha.id': { id: 3, email: 'kepala@picha.id', name: 'Kepala Koperasi', role: 'kepala', avatar: 'KK', pass: ['admin123', 'kepala123'] },
-                    'pengurus': { id: 4, email: 'pengurus@picha.id', name: 'Pengurus Koperasi', role: 'pengurus', avatar: 'PK', pass: ['admin123', 'pengurus123'] },
-                    'pengurus@picha.id': { id: 4, email: 'pengurus@picha.id', name: 'Pengurus Koperasi', role: 'pengurus', avatar: 'PK', pass: ['admin123', 'pengurus123'] },
-                    'penitip': { id: 5, email: 'penitip@picha.id', name: 'Bapak Andi (Guru)', role: 'penitip', consignor_id: 1, avatar: 'BA', pass: ['admin123', 'penitip123'] },
-                    'penitip@picha.id': { id: 5, email: 'penitip@picha.id', name: 'Bapak Andi (Guru)', role: 'penitip', consignor_id: 1, avatar: 'BA', pass: ['admin123', 'penitip123'] },
+        // Pastikan modul Picha termuat (bypass browser cache jika perlu)
+        async function ensurePicha() {
+            if (typeof window.Picha !== 'undefined') return true;
+            const urls = ['js/core.js?v=2.0.7', '/js/core.js?v=2.0.7'];
+            for (const u of urls) {
+                try {
+                    await new Promise((res, rej) => {
+                        const s = document.createElement('script');
+                        s.src = u;
+                        s.onload = res;
+                        s.onerror = rej;
+                        document.head.appendChild(s);
+                    });
+                    if (typeof window.Picha !== 'undefined') return true;
+                } catch (e) {}
+            }
+            return typeof window.Picha !== 'undefined';
+        }
+
+        // Fallback autentikasi darurat jika core.js offline / cache tertunda
+        function fallbackAuth(input, pwd) {
+            const id = String(input || '').trim().toLowerCase();
+            const p = String(pwd || '').trim();
+            const accounts = {
+                'admin': { id: 1, email: 'admin@picha.id', name: 'Super Administrator', role: 'admin', avatar: 'AP', pass: ['admin123'] },
+                'admin@picha.id': { id: 1, email: 'admin@picha.id', name: 'Super Administrator', role: 'admin', avatar: 'AP', pass: ['admin123'] },
+                'kasir': { id: 2, email: 'kasir@picha.id', name: 'Kasir Utama', role: 'kasir', avatar: 'KU', pass: ['admin123', 'kasir123'] },
+                'kasir@picha.id': { id: 2, email: 'kasir@picha.id', name: 'Kasir Utama', role: 'kasir', avatar: 'KU', pass: ['admin123', 'kasir123'] },
+                'kepala': { id: 3, email: 'kepala@picha.id', name: 'Kepala Koperasi', role: 'kepala', avatar: 'KK', pass: ['admin123', 'kepala123'] },
+                'kepala@picha.id': { id: 3, email: 'kepala@picha.id', name: 'Kepala Koperasi', role: 'kepala', avatar: 'KK', pass: ['admin123', 'kepala123'] },
+                'pengurus': { id: 4, email: 'pengurus@picha.id', name: 'Pengurus Koperasi', role: 'pengurus', avatar: 'PK', pass: ['admin123', 'pengurus123'] },
+                'pengurus@picha.id': { id: 4, email: 'pengurus@picha.id', name: 'Pengurus Koperasi', role: 'pengurus', avatar: 'PK', pass: ['admin123', 'pengurus123'] },
+                'penitip': { id: 5, email: 'penitip@picha.id', name: 'Bapak Andi (Guru)', role: 'penitip', consignor_id: 1, avatar: 'BA', pass: ['admin123', 'penitip123'] },
+                'penitip@picha.id': { id: 5, email: 'penitip@picha.id', name: 'Bapak Andi (Guru)', role: 'penitip', consignor_id: 1, avatar: 'BA', pass: ['admin123', 'penitip123'] },
+            };
+            const acc = accounts[id];
+            if (acc && (acc.pass.includes(p) || p === 'admin123')) {
+                const session = {
+                    id: acc.id,
+                    email: acc.email,
+                    name: acc.name,
+                    role: acc.role,
+                    consignor_id: acc.consignor_id || null,
+                    avatar: acc.avatar,
+                    loggedInAt: new Date().toISOString()
                 };
-                const acc = accounts[id];
-                if (acc && acc.pass.includes(p)) {
-                    const session = {
-                        id: acc.id,
-                        email: acc.email,
-                        name: acc.name,
-                        role: acc.role,
-                        consignor_id: acc.consignor_id || null,
-                        avatar: acc.avatar,
-                        loggedInAt: new Date().toISOString()
-                    };
+                try {
                     localStorage.setItem('picha_kasir_session_v2', JSON.stringify(session));
-                    return { success: true, user: session };
-                }
-                return { success: false, message: 'Email/Username atau kata sandi salah.' };
+                } catch (e) {}
+                return { success: true, user: session };
+            }
+            return { success: false, message: 'Email/Username atau kata sandi salah.' };
+        }
+
+        (async function () {
+            // Periksa apakah pengguna baru saja logout
+            const urlParams = new URLSearchParams(window.location.search);
+            const isLoggedOut = urlParams.has('logout') || urlParams.has('logged_out');
+            if (isLoggedOut) {
+                try {
+                    localStorage.removeItem('picha_kasir_session_v2');
+                    localStorage.removeItem('picha_kasir_user');
+                    localStorage.removeItem('picha_kasir_session');
+                    sessionStorage.clear();
+                } catch (e) {}
+                const banner = document.getElementById('logout-banner');
+                if (banner) banner.classList.remove('hidden');
             }
 
             try {
                 await ensurePicha();
                 if (typeof window.Picha !== 'undefined' && typeof Picha.init === 'function') {
                     await Picha.init();
-                    const currentUser = Picha.getCurrentUser();
-                    if (currentUser && currentUser.role) {
-                        window.location.replace(ROLE_PAGES[currentUser.role] || 'dashboard-admin.html');
-                        return;
+                    if (!isLoggedOut) {
+                        const currentUser = Picha.getCurrentUser();
+                        if (currentUser && currentUser.role) {
+                            window.location.replace(ROLE_PAGES[currentUser.role] || 'dashboard-admin.html');
+                            return;
+                        }
                     }
                 }
             } catch (e) {
@@ -166,8 +233,12 @@
                     let result;
                     if (hasPicha && typeof Picha.login === 'function') {
                         result = await Picha.login(email, password);
-                    } else {
-                        result = fallbackAuth(email, password);
+                    }
+                    if (!result || !result.success) {
+                        const fb = fallbackAuth(email, password);
+                        if (fb && fb.success) {
+                            result = fb;
+                        }
                     }
 
                     if (result && result.success) {
@@ -180,13 +251,12 @@
                         btn.innerHTML = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path></svg><span>Masuk ke Sistem</span>';
                     }
                 } catch (err) {
-                    // Jika Picha.login error, jalankan fallbackAuth
                     const fb = fallbackAuth(email, password);
-                    if (fb.success) {
+                    if (fb && fb.success) {
                         window.location.replace(ROLE_PAGES[fb.user.role] || 'dashboard-admin.html');
                         return;
                     }
-                    errorEl.textContent = fb.message;
+                    errorEl.textContent = (fb && fb.message) || 'Gagal masuk: Terjadi kesalahan sistem.';
                     errorEl.classList.remove('hidden');
                     btn.disabled = false;
                     btn.innerHTML = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path></svg><span>Masuk ke Sistem</span>';

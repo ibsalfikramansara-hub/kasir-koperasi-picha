@@ -1,6 +1,6 @@
 {
   "name": "picha-app",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "description": "Sistem Kasir & Inventaris Koperasi Madrasah Picha Mandiri - Offline-First IndexedDB",
   "main": "server.js",
   "scripts": {

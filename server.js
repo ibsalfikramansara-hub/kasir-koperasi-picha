@@ -72,7 +72,7 @@ function requestHandler(req, res) {
     res.end(JSON.stringify({
       status: 'ok',
       app: 'Kasir Koperasi Picha',
-      version: '2.0.6',
+      version: '2.0.7',
       uptime: process.uptime(),
       timestamp: new Date().toISOString()
     }));
@@ -141,3 +141,4 @@ if (require.main === module) {
 
 // Export untuk Vercel Serverless (@vercel/node)
 module.exports = requestHandler;
+

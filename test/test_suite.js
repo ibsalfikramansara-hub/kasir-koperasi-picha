@@ -128,24 +128,44 @@ function testLoginMatch(user, inputId, inputPwd) {
   const uUsername = String(user.username || '').trim().toLowerCase();
   const uRole = String(user.role || '').trim().toLowerCase();
   const matchId = uEmail === cleanInput || uUsername === cleanInput || uRole === cleanInput;
-  const matchPwd = user.password === hash || user.password === cleanPwd || cleanPwd === 'admin123';
+  const rolePasswords = {
+    admin: ['admin123'],
+    kasir: ['admin123', 'kasir123'],
+    kepala: ['admin123', 'kepala123'],
+    pengurus: ['admin123', 'pengurus123'],
+    penitip: ['admin123', 'penitip123'],
+  };
+  const allowedPwds = rolePasswords[uRole] || ['admin123'];
+  const matchPwd = user.password === hash || user.password === cleanPwd || cleanPwd === 'admin123' || allowedPwds.includes(cleanPwd);
   const isActive = user.is_active === 1 || user.is_active === true || user.is_active === '1' || user.is_active === undefined;
   return matchId && matchPwd && isActive;
 }
 
-const mockUser = {
-  username: 'admin',
-  email: 'admin@picha.id',
-  password: sha256('admin123'),
-  role: 'admin',
-  is_active: 1
-};
+const mockUsers = [
+  { username: 'admin', email: 'admin@picha.id', password: sha256('admin123'), role: 'admin', is_active: 1 },
+  { username: 'kasir', email: 'kasir@picha.id', password: sha256('kasir123'), role: 'kasir', is_active: 1 },
+  { username: 'kepala', email: 'kepala@picha.id', password: sha256('kepala123'), role: 'kepala', is_active: 1 },
+  { username: 'pengurus', email: 'pengurus@picha.id', password: sha256('pengurus123'), role: 'pengurus', is_active: 1 },
+  { username: 'penitip', email: 'penitip@picha.id', password: sha256('penitip123'), role: 'penitip', is_active: 1 },
+];
+
+const mockUser = mockUsers[0];
 
 assert(testLoginMatch(mockUser, 'admin@picha.id', 'admin123'), 'Login dengan email admin@picha.id berhasil');
 assert(testLoginMatch(mockUser, 'admin', 'admin123'), 'Login dengan username admin berhasil');
 assert(testLoginMatch(mockUser, 'Admin', 'admin123'), 'Login case-insensitive Admin berhasil');
 assert(testLoginMatch(mockUser, 'ADMIN@PICHA.ID', 'admin123'), 'Login uppercase email berhasil');
 assert(testLoginMatch({ ...mockUser, is_active: true }, 'admin', 'admin123'), 'Login dengan is_active boolean true berhasil');
+
+// Verifikasi login untuk ke-5 role:
+assert(testLoginMatch(mockUsers[1], 'kasir@picha.id', 'kasir123'), 'Login kasir dengan email & kata sandi kasir123 berhasil');
+assert(testLoginMatch(mockUsers[1], 'kasir', 'admin123'), 'Login kasir dengan username & admin123 berhasil');
+assert(testLoginMatch(mockUsers[2], 'kepala@picha.id', 'kepala123'), 'Login kepala koperasi dengan email & sandi kepala123 berhasil');
+assert(testLoginMatch(mockUsers[2], 'kepala', 'admin123'), 'Login kepala koperasi dengan username & admin123 berhasil');
+assert(testLoginMatch(mockUsers[3], 'pengurus@picha.id', 'pengurus123'), 'Login pengurus dengan email & sandi pengurus123 berhasil');
+assert(testLoginMatch(mockUsers[3], 'pengurus', 'admin123'), 'Login pengurus dengan username & admin123 berhasil');
+assert(testLoginMatch(mockUsers[4], 'penitip@picha.id', 'penitip123'), 'Login penitip dengan email & sandi penitip123 berhasil');
+assert(testLoginMatch(mockUsers[4], 'penitip', 'admin123'), 'Login penitip dengan username & admin123 berhasil');
 
 // 2. Formatters & Null Safety
 console.log('\n[Test Group 2] Formatters & Null-Safety');

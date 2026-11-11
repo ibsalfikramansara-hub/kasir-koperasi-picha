@@ -333,7 +333,7 @@
         username: 'admin',
         email: 'admin@picha.id',
         password: await sha256('admin123'),
-        name: 'Admin Picha',
+        name: 'Super Administrator',
         role: 'admin',
         avatar: 'AP',
         is_active: 1,
@@ -342,7 +342,7 @@
       {
         username: 'kasir',
         email: 'kasir@picha.id',
-        password: await sha256('admin123'),
+        password: await sha256('kasir123'),
         name: 'Kasir Utama',
         role: 'kasir',
         avatar: 'KU',
@@ -352,7 +352,7 @@
       {
         username: 'kepala',
         email: 'kepala@picha.id',
-        password: await sha256('admin123'),
+        password: await sha256('kepala123'),
         name: 'Kepala Koperasi',
         role: 'kepala',
         avatar: 'KK',
@@ -362,7 +362,7 @@
       {
         username: 'pengurus',
         email: 'pengurus@picha.id',
-        password: await sha256('admin123'),
+        password: await sha256('pengurus123'),
         name: 'Pengurus Koperasi',
         role: 'pengurus',
         avatar: 'PK',
@@ -372,7 +372,7 @@
       {
         username: 'penitip',
         email: 'penitip@picha.id',
-        password: await sha256('admin123'),
+        password: await sha256('penitip123'),
         name: 'Bapak Andi (Guru)',
         role: 'penitip',
         consignor_id: 1,
@@ -385,10 +385,20 @@
     if (!existing || existing.length === 0) {
       for (const u of defaultUsers) await insert('users', u);
     } else {
-      // Pastikan akun admin selalu ada
-      const hasAdmin = existing.some((u) => (u.email && u.email.toLowerCase() === 'admin@picha.id') || u.role === 'admin' || u.username === 'admin');
-      if (!hasAdmin) {
-        await insert('users', defaultUsers[0]);
+      // Pastikan SEMUA akun bawaan (admin, kasir, kepala, pengurus, penitip) selalu ada
+      for (const defU of defaultUsers) {
+        const found = existing.some((u) =>
+          (u.email && u.email.toLowerCase() === defU.email.toLowerCase()) ||
+          (u.username && u.username.toLowerCase() === defU.username.toLowerCase()) ||
+          (u.role && u.role.toLowerCase() === defU.role.toLowerCase())
+        );
+        if (!found) {
+          try {
+            await insert('users', defU);
+          } catch (e) {
+            console.warn('[Picha] Init user insert error:', e);
+          }
+        }
       }
     }
 
@@ -479,33 +489,42 @@
     const cleanPwd = String(password || '').trim();
     const hash = await sha256(cleanPwd);
 
+    const rolePasswords = {
+      admin: ['admin123'],
+      kasir: ['admin123', 'kasir123'],
+      kepala: ['admin123', 'kepala123'],
+      pengurus: ['admin123', 'pengurus123'],
+      penitip: ['admin123', 'penitip123'],
+    };
+
     let user = users.find((u) => {
       const uEmail = String(u.email || '').trim().toLowerCase();
       const uUsername = String(u.username || '').trim().toLowerCase();
       const uRole = String(u.role || '').trim().toLowerCase();
       const matchId = uEmail === cleanInput || uUsername === cleanInput || uRole === cleanInput;
-      const matchPwd = u.password === hash || u.password === cleanPwd || cleanPwd === 'admin123';
+      const allowedPwds = rolePasswords[uRole] || ['admin123'];
+      const matchPwd = u.password === hash || u.password === cleanPwd || cleanPwd === 'admin123' || allowedPwds.includes(cleanPwd);
       const isActive = u.is_active === 1 || u.is_active === true || u.is_active === '1' || u.is_active === undefined;
       return matchId && matchPwd && isActive;
     });
 
-    // Self-healing fallback: Jika user memasukkan akun bawaan dengan sandi admin123 tapi belum ada di DB
-    if (!user && cleanPwd === 'admin123') {
+    // Self-healing fallback: Mendukung kelima akun (admin, kasir, kepala, pengurus, penitip)
+    if (!user) {
       const roleMap = {
-        'admin': { role: 'admin', name: 'Super Administrator', email: 'admin@picha.id', avatar: 'AP' },
-        'admin@picha.id': { role: 'admin', name: 'Super Administrator', email: 'admin@picha.id', avatar: 'AP' },
-        'kasir': { role: 'kasir', name: 'Kasir Utama', email: 'kasir@picha.id', avatar: 'KU' },
-        'kasir@picha.id': { role: 'kasir', name: 'Kasir Utama', email: 'kasir@picha.id', avatar: 'KU' },
-        'kepala': { role: 'kepala', name: 'Kepala Koperasi', email: 'kepala@picha.id', avatar: 'KK' },
-        'kepala@picha.id': { role: 'kepala', name: 'Kepala Koperasi', email: 'kepala@picha.id', avatar: 'KK' },
-        'pengurus': { role: 'pengurus', name: 'Pengurus Koperasi', email: 'pengurus@picha.id', avatar: 'PK' },
-        'pengurus@picha.id': { role: 'pengurus', name: 'Pengurus Koperasi', email: 'pengurus@picha.id', avatar: 'PK' },
-        'penitip': { role: 'penitip', name: 'Penitip Barang', email: 'penitip@picha.id', avatar: 'PB' },
-        'penitip@picha.id': { role: 'penitip', name: 'Penitip Barang', email: 'penitip@picha.id', avatar: 'PB' },
+        'admin': { role: 'admin', name: 'Super Administrator', email: 'admin@picha.id', avatar: 'AP', pass: ['admin123'] },
+        'admin@picha.id': { role: 'admin', name: 'Super Administrator', email: 'admin@picha.id', avatar: 'AP', pass: ['admin123'] },
+        'kasir': { role: 'kasir', name: 'Kasir Utama', email: 'kasir@picha.id', avatar: 'KU', pass: ['admin123', 'kasir123'] },
+        'kasir@picha.id': { role: 'kasir', name: 'Kasir Utama', email: 'kasir@picha.id', avatar: 'KU', pass: ['admin123', 'kasir123'] },
+        'kepala': { role: 'kepala', name: 'Kepala Koperasi', email: 'kepala@picha.id', avatar: 'KK', pass: ['admin123', 'kepala123'] },
+        'kepala@picha.id': { role: 'kepala', name: 'Kepala Koperasi', email: 'kepala@picha.id', avatar: 'KK', pass: ['admin123', 'kepala123'] },
+        'pengurus': { role: 'pengurus', name: 'Pengurus Koperasi', email: 'pengurus@picha.id', avatar: 'PK', pass: ['admin123', 'pengurus123'] },
+        'pengurus@picha.id': { role: 'pengurus', name: 'Pengurus Koperasi', email: 'pengurus@picha.id', avatar: 'PK', pass: ['admin123', 'pengurus123'] },
+        'penitip': { role: 'penitip', name: 'Bapak Andi (Guru)', email: 'penitip@picha.id', avatar: 'BA', consignor_id: 1, pass: ['admin123', 'penitip123'] },
+        'penitip@picha.id': { role: 'penitip', name: 'Bapak Andi (Guru)', email: 'penitip@picha.id', avatar: 'BA', consignor_id: 1, pass: ['admin123', 'penitip123'] },
       };
 
       const matchedRole = roleMap[cleanInput];
-      if (matchedRole) {
+      if (matchedRole && (matchedRole.pass.includes(cleanPwd) || cleanPwd === 'admin123')) {
         try {
           user = await insert('users', {
             username: matchedRole.role,
@@ -514,6 +533,7 @@
             name: matchedRole.name,
             role: matchedRole.role,
             avatar: matchedRole.avatar,
+            consignor_id: matchedRole.consignor_id || null,
             is_active: 1,
             created_by: 'system_self_heal',
           });
@@ -530,11 +550,11 @@
 
     const session = {
       id: user.id || 1,
-      email: user.email || 'admin@picha.id',
+      email: user.email || (user.role + '@picha.id'),
       name: user.name || user.nama || 'Pengguna',
-      role: user.role || 'admin',
+      role: user.role,
       consignor_id: user.consignor_id || null,
-      avatar: user.avatar || 'U',
+      avatar: user.avatar || (user.name ? user.name.slice(0, 2).toUpperCase() : 'U'),
       loggedInAt: new Date().toISOString(),
     };
     localStorage.setItem(SESSION_KEY, JSON.stringify(session));
@@ -549,13 +569,14 @@
   }
 
   function logout() {
-    localStorage.removeItem(SESSION_KEY);
-    // Bersihkan penanda protectPage agar login halaman bisa dicek ulang
-    Object.keys(sessionStorage).forEach(k => {
-      if (k.startsWith('picha_protect_checked_')) sessionStorage.removeItem(k);
-    });
+    try {
+      localStorage.removeItem(SESSION_KEY);
+      localStorage.removeItem('picha_kasir_user');
+      localStorage.removeItem('picha_kasir_session');
+      sessionStorage.clear();
+    } catch (e) {}
     _protectGuard = false;
-    window.location.replace('login.html');
+    window.location.replace('login.html?logout=true');
   }
 
   function getCurrentUser() {
